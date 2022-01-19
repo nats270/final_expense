@@ -118,8 +118,11 @@ class HomePageState extends State<HomePage> {
       "KVBANK": 'KVB',
       "HDFCBK": 'HDFC',
       "AxisBk": 'AXIS',
-      "ICICI Bank": "ICICI",
-      "State Bank of India": "SBI",
+      "ICICIB": "ICICI",
+      "SBI": "SBI",
+      "CENTBK": "CENTRAL BANK",
+      "IndBnk": "INDIAN BANK",
+      "CBoI": "CENTRAL"
     };
     bankWiseMsgs = {
       'BOI': [],
@@ -129,6 +132,9 @@ class HomePageState extends State<HomePage> {
       'AXIS': [],
       'ICICI' :[],
       'SBI' :[],
+      'CENTRAL BANK': [],
+      'INDIAN BANK': [],
+      'CENTRAL':[],
     };
     for (var i = 0; i < _messages.length; i++) {
       String msgAddress = _messages[i].address;
@@ -168,18 +174,34 @@ class HomePageState extends State<HomePage> {
         //];
         List<RegExp> deposits = [
           RegExp(r"(INR|Rs\.|Rs) *\d+(,\d+)*\.?\d*.* has been DEPOSITED", caseSensitive: false),
+          RegExp(r"(INR|Rs\.|Rs) *\d+(,\d+)*\.?\d*.* was DEPOSITED", caseSensitive: false),
           RegExp(r"DEPOSITED.*(INR|Rs\.|Rs) *\d+(,\d+)*\.?\d*", caseSensitive: false),
+          RegExp(r"has been DEPOSITED.*(INR|Rs\.|Rs) *\d+(,\d+)*\.?\d*", caseSensitive: false),
         ];
 
         List<RegExp> credits = [
           RegExp(r"(INR|Rs\.|Rs) *\d+(,\d+)*\.?\d*.* has been CREDITED", caseSensitive: false),
+          RegExp(r"(INR|Rs\.|Rs) *\d+(,\d+)*\.?\d*.* CREDITED", caseSensitive: false),
           RegExp(r"CREDITED.*(INR|Rs\.|Rs) *\d+(,\d+)*\.?\d*", caseSensitive: false),
           RegExp(r"CREDITED with (INR|Rs\.|Rs) *\d+(,\d+)*\.?\d*", caseSensitive: false),
+          RegExp(r"has been CREDITED with (INR|Rs\.|Rs) *\d+(,\d+)*\.?\d*", caseSensitive: false),
+          RegExp(r"was CREDITED with (INR|Rs\.|Rs) *\d+(,\d+)*\.?\d*", caseSensitive: false),
+          RegExp(r"is CREDITED with (INR|Rs\.|Rs) *\d+(,\d+)*\.?\d*", caseSensitive: false),
+          RegExp(r"had been CREDITED with (INR|Rs\.|Rs) *\d+(,\d+)*\.?\d*", caseSensitive: false),
+          RegExp(r"is CREDITED by (INR|Rs\.|Rs) *\d+(,\d+)*\.?\d*", caseSensitive: false),
+          RegExp(r"CREDITED by (INR|Rs\.|Rs) *\d+(,\d+)*\.?\d*", caseSensitive: false),
         ];
         List<RegExp> debits = [
           RegExp(r"(INR|Rs\.|Rs) *\d+(,\d+)*\.?\d*.* has been DEBITED", caseSensitive: false),
           RegExp(r"DEBITED.*(INR|Rs\.|Rs) *\d+(,\d+)*\.?\d*", caseSensitive: false),
           RegExp(r"DEBITED with (INR|Rs\.|Rs) *\d+(,\d+)*\.?\d*", caseSensitive: false),
+          RegExp(r"has been DEBITED with (INR|Rs\.|Rs) *\d+(,\d+)*\.?\d*", caseSensitive: false),
+          RegExp(r"was DEBITED with (INR|Rs\.|Rs) *\d+(,\d+)*\.?\d*", caseSensitive: false),
+          RegExp(r"DEBITED for (INR|Rs\.|Rs) *\d+(,\d+)*\.?\d*", caseSensitive: false),
+          RegExp(r"DEBITED by (INR|Rs\.|Rs) *\d+(,\d+)*\.?\d*", caseSensitive: false),
+          RegExp(r"is DEBITED by (INR|Rs\.|Rs) *\d+(,\d+)*\.?\d*", caseSensitive: false),
+          RegExp(r"is DEBITED with (INR|Rs\.|Rs) *\d+(,\d+)*\.?\d*", caseSensitive: false),
+          RegExp(r"is DEBITED for (INR|Rs\.|Rs) *\d+(,\d+)*\.?\d*", caseSensitive: false),
         ];
 
         for (var msg in msgs) {
