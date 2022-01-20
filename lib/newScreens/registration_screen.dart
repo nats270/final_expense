@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:signup/Screens/Welcome/welcome_screen.dart';
+import 'package:signup/Screens/WelcomeHome/welcome_home_screen.dart';
+import 'package:signup/Screens/home_screen.dart';
 import 'package:signup/models/user_model.dart';
 
 class RegistrationScreen extends StatefulWidget {
@@ -287,6 +289,6 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     await firebaseFirestore.collection("users").doc(user.uid).set(userModel.toMap());
     Fluttertoast.showToast(msg: "Account created successfully :) ");
 
-    Navigator.pushAndRemoveUntil((context), MaterialPageRoute(builder: (context) => const WelcomeScreen()), (route) => false);
+    Navigator.pushAndRemoveUntil((context), MaterialPageRoute(builder: (context) => const WelcomeHomeScreen()), (route) => false);
   }
 }

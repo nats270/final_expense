@@ -1,7 +1,10 @@
 //import './models/details.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:signup/models/details.dart';
 import 'package:signup/utils/database_helper.dart';
+
+import '../constants.dart';
 
 const deepPurpleColor = Colors.deepPurple;
 
@@ -15,7 +18,7 @@ class ListPage extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return const MyHomePage(title: 'Expense List');
+    return const MyHomePage(title: 'Expense Card');
   }
 }
 
@@ -74,19 +77,41 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       backgroundColor: Colors.grey[200],
       appBar: AppBar(
-        leading: IconButton(icon: Icon(Icons.arrow_back),onPressed: (){
-          Navigator.pop(context);
-        },),
-        backgroundColor: deepPurpleColor,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          color: Colors.deepPurple,
+          onPressed: (){
+            Navigator.pop(context);
+          },),
+        backgroundColor: kPrimaryLightColor,
         title: Center(
           child: Text(
             widget.title,
-            style: const TextStyle(
-              color: Colors.white,
-            ),
+            style: GoogleFonts.raleway(textStyle:TextStyle(
+              color: kPrimaryColor,
+            ),),
           ),
         ),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.savings,
+              color: Colors.deepPurple,),)
+        ],
       ),
+      // appBar: AppBar(
+      //   leading: IconButton(icon: Icon(Icons.arrow_back),onPressed: (){
+      //     Navigator.pop(context);
+      //   },),
+      //   backgroundColor: deepPurpleColor,
+      //   title: Center(
+      //     child: Text(
+      //       widget.title,
+      //       style: const TextStyle(
+      //         color: Colors.white,
+      //       ),
+      //     ),
+      //   ),
+      // ),
       body: Column(
         children: <Widget>[_list()],
       ), // This trailing comma makes auto-formatting nicer for build methods.

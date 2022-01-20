@@ -1,5 +1,7 @@
 //import './models/details.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:signup/constants.dart';
 import 'package:signup/models/details.dart';
 import 'package:signup/utils/database_helper.dart';
 import 'package:signup/widgets/list.dart';
@@ -76,19 +78,42 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       backgroundColor: Colors.grey[200],
       appBar: AppBar(
-        backgroundColor: deepPurpleColor,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          color: Colors.deepPurple,
+          onPressed: (){
+            Navigator.pop(context);
+          },),
+        backgroundColor: kPrimaryLightColor,
         title: Center(
           child: Text(
             widget.title,
-            style: const TextStyle(
-              color: Colors.white,
-            ),
+            style: GoogleFonts.raleway(textStyle:TextStyle(
+              color: kPrimaryColor,
+            ),),
           ),
         ),
+       actions: [
+         IconButton(
+           icon: Icon(Icons.savings,
+           color: Colors.deepPurple,),)
+       ],
       ),
       body: Column(
         children: <Widget>[_form(), list()],
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      ),
+      bottomNavigationBar: BottomAppBar(
+        color: kPrimaryLightColor,
+        child: IconButton(
+          icon: Icon(
+              Icons.refresh,
+              color: kPrimaryColor,
+          ),
+          onPressed: (){
+            Navigator.of(context).push(MaterialPageRoute(builder: (_) => const ListPage()));
+          },
+        ),
+      ),// This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 
@@ -183,27 +208,39 @@ class _MyHomePageState extends State<MyHomePage> {
                 },
                 onSaved: (dateCtl) => setState(() => _details.date = dateCtl),
               ),
+              SizedBox(height: 10,),
               Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
-                RaisedButton.icon(
-                  onPressed: () {
-                    _onAdd();
+
+                CircleAvatar(
+                  backgroundColor: kPrimaryLightColor,
+                  child: IconButton(
+                      onPressed: (){
+                        _onAdd();
                   },
-                  //Navigator.of(context).push(MaterialPageRoute(builder: (_) => ListPage()));
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-                  color: Colors.deepPurple,
-                  icon: const Icon(Icons.add, color: Colors.white),
-                  label: const Text('ADD', style: TextStyle(color: Colors.white)),
+                      icon: const Icon(Icons.add, color: kPrimaryColor ,),
+                  ),
                 ),
-                RaisedButton.icon(
-                  onPressed: () {
-                    Navigator.of(context).push(MaterialPageRoute(builder: (_) => const ListPage()));
-                    //Navigator.of(context).push(MaterialPageRoute(builder: (_) => PieChartPage()));
-                  },
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-                  color: Colors.deepPurple,
-                  icon: const Icon(Icons.refresh, color: Colors.white),
-                  label: const Text('REFRESH', style: TextStyle(color: Colors.white)),
-                ),
+
+                // RaisedButton.icon(
+                //   onPressed: () {
+                //     _onAdd();
+                //   },
+                //   //Navigator.of(context).push(MaterialPageRoute(builder: (_) => ListPage()));
+                //   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                //   color: Colors.deepPurple,
+                //   icon: const Icon(Icons.add, color: Colors.white),
+                //   label: const Text('ADD', style: TextStyle(color: Colors.white)),
+                // ),
+                // RaisedButton.icon(
+                //   onPressed: () {
+                //     Navigator.of(context).push(MaterialPageRoute(builder: (_) => const ListPage()));
+                //     //Navigator.of(context).push(MaterialPageRoute(builder: (_) => PieChartPage()));
+                //   },
+                //   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                //   color: Colors.deepPurple,
+                //   icon: const Icon(Icons.refresh, color: Colors.white),
+                //   label: const Text('REFRESH', style: TextStyle(color: Colors.white)),
+                // ),
               ]),
             ],
           ),

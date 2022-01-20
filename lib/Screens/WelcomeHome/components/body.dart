@@ -1,17 +1,18 @@
 import 'dart:core';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:signup/Screens/Welcome/components/background.dart';
+import 'package:signup/Screens/WelcomeHome/components/background.dart';
 import 'package:signup/components/rounded_button.dart';
 import 'package:signup/constants.dart';
 import 'package:signup/newScreens/login_screen.dart';
-import 'package:signup/newScreens/registration_screen.dart';
-
+//import 'package:signup/newScreens/registration_screen.dart';
 import '../../home_screen.dart';
 
 class Body extends StatelessWidget {
   const Body({Key key}) : super(key: key);
+
 
   @override
   Widget build(BuildContext context) {
@@ -32,22 +33,18 @@ class Body extends StatelessWidget {
               height: size.height * 0.45,
             ),
             SizedBox(height: size.height * 0.03),
-            // RoundedButton(
-            //   text: "LOGIN",
-            //   color: kPrimaryColor,
-            //   press: () {
-            //     Navigator.push(
-            //       context,
-            //       MaterialPageRoute(
-            //         builder: (context) {
-            //           return NewLoginScreen();
-            //         },
-            //       ),
-            //     );
-            //   },
-            // ),
+            // Text("${User.firstName} ${User.lastName}",
+            //     style: TextStyle(
+            //       color: Colors.black54,
+            //       fontWeight: FontWeight.w500,
+            //     )),
+            // Text("${User.email}",
+            //     style: TextStyle(
+            //       color: Colors.black54,
+            //       fontWeight: FontWeight.w500,
+            //     )),
             RoundedButton(
-              text: "Login",
+              text: "Welcome",
               color: kPrimaryLightColor,
               textColor: kPrimaryColor,
               press: () {
@@ -55,7 +52,7 @@ class Body extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                     builder: (context) {
-                      return const NewLoginScreen();
+                      return const HomeScreen();
                     },
                   ),
                 );
@@ -67,17 +64,27 @@ class Body extends StatelessWidget {
               textColor: kPrimaryLightColor,
               press: () {
                 logout(context);
-              },
+              }
+                // Navigator.push(
+                //   context,
+                //   MaterialPageRoute(
+                //     builder: (context) {
+                //       return const NewLoginScreen()
+              //     ),
+              //   );
+              // },
             ),
-        RoundedButton(
-              text:
-                'SignUP',
-              color: kPrimaryLightColor,
-              textColor: kPrimaryColor,
-              press: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => const RegistrationScreen()));
-                  //Navigator.pop(context);
-                },),
+            // Text(),
+            // Text("email"),
+            // RoundedButton(
+            //   text:
+            //   'SignUP',
+            //   color: kPrimaryLightColor,
+            //   textColor: kPrimaryColor,
+            //   press: () {
+            //     Navigator.push(context, MaterialPageRoute(builder: (context) => RegistrationScreen()));
+            //     //Navigator.pop(context);
+            //   },),
           ],
         ),
       ),
@@ -88,4 +95,5 @@ class Body extends StatelessWidget {
     Navigator.of(context).pushReplacement(
         MaterialPageRoute(builder: (context) => const NewLoginScreen()));
   }
+
 }

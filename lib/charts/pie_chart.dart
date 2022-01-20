@@ -1,5 +1,6 @@
 import 'package:awesome_circular_chart/awesome_circular_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:signup/constants.dart';
 import 'package:signup/models/bnk_transaction.dart';
 import 'package:signup/utilstwo/database_helper.dart';
 import 'package:signup/utilstwo/values.dart';
@@ -46,15 +47,15 @@ class _PieChartState extends State<PieChart> {
 
     for (var item in transactionList) {
       Color debitColor = Colors.yellowAccent;
-      Color creditColor = Colors.blue;
+      Color creditColor = Colors.pinkAccent;
       double debit = item.debitedAmt;
       double credit = item.creditedAmt;
       if (item.debitedAmt == 0) {
-        debitColor = Colors.brown;
+        debitColor = Colors.green;
         debit = 50;
       }
       if (item.creditedAmt == 0) {
-        creditColor = Colors.blueGrey;
+        creditColor = Colors.cyanAccent;
         credit = 50;
       }
       _monthyTransactionPieData.add(<CircularStackEntry>[
@@ -96,12 +97,17 @@ class _PieChartState extends State<PieChart> {
     }
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.name),
-        backgroundColor: Colors.deepPurple,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back,color: kPrimaryColor,),
+          onPressed:(){
+            Navigator.pop(context);
+          } ,),
+        title: Text(widget.name,style: TextStyle(color: kPrimaryColor),),
+        backgroundColor: kPrimaryLightColor,
       ),
       body: _screenWidget(),
       floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.deepPurple,
+        backgroundColor: kPrimaryColor,
         child: const Icon(Icons.next_week),
         onPressed: _cycleMonths,
       ),

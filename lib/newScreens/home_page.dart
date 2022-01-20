@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:signup/Screens/home_screen.dart';
+import 'package:signup/constants.dart';
 import 'package:signup/models/bnk_transaction.dart';
 import 'package:signup/newScreens/bank_list_item.dart';
 import 'package:signup/utilstwo/database_helper.dart';
@@ -48,13 +51,21 @@ class HomePageState extends State<HomePage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('My Accounts'),
-        backgroundColor: Colors.deepPurple[700],
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          color: Colors.deepPurple,
+          onPressed: (){
+            //Navigator.pop(context);
+            Navigator.of(context).push(MaterialPageRoute(builder: (_) => const HomeScreen()));
+          },),
+        title: Text('MY ACCOUNTS' , style: GoogleFonts.raleway(textStyle: TextStyle(color: kPrimaryColor)),),
+        //backgroundColor: Colors.deepPurple[700],
+        backgroundColor: kPrimaryLightColor,
       ),
       body: _homePageWidgets(),
       floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.deepPurple[700],
-        child: const Icon(Icons.refresh),
+        backgroundColor: kPrimaryColor,
+        child: const Icon(Icons.refresh,color: kPrimaryLightColor,),
         tooltip: 'Scan Messages',
         onPressed: () async {
           _databaseHelper.delete().then((res) {

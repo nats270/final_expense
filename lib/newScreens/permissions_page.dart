@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:signup/newScreens/home_page.dart';
 import 'package:super_easy_permissions/super_easy_permissions.dart';
 
+
 class PermissionPage extends StatefulWidget {
   const PermissionPage({Key key}) : super(key: key);
 

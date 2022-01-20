@@ -2,8 +2,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:signup/Screens/Welcome/welcome_screen.dart';
+import 'package:signup/Screens/WelcomeHome/welcome_home_screen.dart';
+import 'package:signup/Screens/home_screen.dart';
+import 'package:signup/constants.dart';
 import 'package:signup/newScreens/registration_screen.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class NewLoginScreen extends StatefulWidget {
   const NewLoginScreen({Key key}) : super(key: key);
@@ -26,7 +29,7 @@ class _NewLoginScreenState extends State<NewLoginScreen> {
   void initState() {
     Future.delayed(Duration.zero).then((value) {
       if (_auth.currentUser != null) {
-        Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => WelcomeScreen()));
+        Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => const HomeScreen()));
       }
     });
     super.initState();
@@ -89,13 +92,21 @@ class _NewLoginScreenState extends State<NewLoginScreen> {
     final loginButton = Material(
       elevation: 5,
       borderRadius: BorderRadius.circular(10),
-      color: Colors.deepPurple,
+      color: kPrimaryColor,
       child: MaterialButton(
         padding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
         minWidth: MediaQuery.of(context).size.width * 0.4,
-        child: const Text(
+        child: Text(
           'LOGIN',
-          style: TextStyle(fontSize: 20, color: Colors.white),
+          style: GoogleFonts.raleway(
+            textStyle:const TextStyle(
+              color: kPrimaryLightColor,
+              //fontWeight: FontWeight.w800,
+              //fontStyle: FontStyle.italic,
+              fontSize: 20,
+            ),
+          ),
+          //style: TextStyle(fontSize: 20, color: Colors.white),
         ),
         onPressed: () {
           signIn(emailController.text, passwordController.text);
@@ -117,9 +128,17 @@ class _NewLoginScreenState extends State<NewLoginScreen> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Text(
+                     Text(
                       "EXPENSE TRACKER",
-                      style: TextStyle(color: Colors.deepPurple, fontWeight: FontWeight.w800, fontSize: 26),
+                      style: GoogleFonts.raleway(
+                        textStyle:const TextStyle(
+                          color: Colors.deepPurple,
+                          fontWeight: FontWeight.w800,
+                          //fontStyle: FontStyle.italic,
+                          fontSize: 30,
+                        ),
+                      ),
+                      //style: TextStyle(color: Colors.deepPurple, fontWeight: FontWeight.w800, fontSize: 26),
                     ),
                     const SizedBox(height: 20),
                     SvgPicture.asset(
@@ -136,13 +155,17 @@ class _NewLoginScreenState extends State<NewLoginScreen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Text("Don't have an account?", style: TextStyle(color: Colors.black)),
+                        Text("Don't have an account?", style: GoogleFonts.raleway(
+                            textStyle:const TextStyle(color: Colors.black))),
                         GestureDetector(
-                          child: const Text(
+                          child: Text(
                             "Sign UP",
-                            style: TextStyle(
+                            style: GoogleFonts.raleway(
+                              textStyle:const TextStyle(
                               color: Colors.deepPurple,
                               fontWeight: FontWeight.w800,
+                              fontStyle: FontStyle.italic,
+                              ),
                             ),
                           ),
                           onTap: () {
@@ -166,7 +189,7 @@ class _NewLoginScreenState extends State<NewLoginScreen> {
       try {
         await _auth.signInWithEmailAndPassword(email: email, password: password).then((uid) => {
               Fluttertoast.showToast(msg: "Login Successful"),
-              Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => const WelcomeScreen())),
+              Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => const WelcomeHomeScreen())),
             });
       } on FirebaseAuthException catch (error) {
         switch (error.code) {

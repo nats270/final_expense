@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:signup/charts/pie_chart.dart';
+import 'package:signup/constants.dart';
 import 'package:signup/models/bnk_transaction.dart';
+import 'package:signup/newScreens/home_page.dart';
 import 'package:signup/utilstwo/database_helper.dart';
 import 'package:signup/utilstwo/values.dart';
 import 'package:sqflite/sqflite.dart';
@@ -50,21 +52,22 @@ class MonthWiseTransactionPageState extends State<MonthWiseTransactionPage> {
 
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: kPrimaryLightColor,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.deepPurple,),
           onPressed: () {
-            Navigator.pop(context);
+            // Navigator.pop(context);
+            Navigator.of(context).push(MaterialPageRoute(builder: (_) => const HomePage()));
           },
         ),
       ),
       bottomNavigationBar: BottomAppBar(
         shape: const CircularNotchedRectangle(),
-        color: Colors.deepPurple,
+        color: kPrimaryLightColor,
         child: IconButton(
-          icon: const Icon(Icons.refresh),
-          onPressed: () {
-
-            //Navigator.push(context, MaterialPageRoute(builder: (context) => PieChart(bnkName)));
+          icon: const Icon(Icons.arrow_back,color: kPrimaryColor,),
+          onPressed: (){
+            Navigator.push(context, MaterialPageRoute(builder: (context) => const HomePage()));
           },
         ),
       ),

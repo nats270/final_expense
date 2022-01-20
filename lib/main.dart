@@ -1,8 +1,9 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:signup/constants.dart';
-
-import 'newScreens/login_screen.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'Screens/Welcome/welcome_screen.dart';
+//import 'newScreens/login_screen.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -22,11 +23,12 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Auth',
       theme: ThemeData(
         //static const MaterialColor _2A363B = MaterialColor(0xff2A363B, colorMap);
-
         primaryColor: kPrimaryColor,
+        //primarySwatch: kPrimaryLightColor,
+        textTheme: GoogleFonts.ralewayTextTheme(Theme.of(context).textTheme),
         //scaffoldBackgroundColor: Colors.white,
       ),
-      home: const NewLoginScreen(),
+      home: const WelcomeScreen(),
     );
   }
 }
