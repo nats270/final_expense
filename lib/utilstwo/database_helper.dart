@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:path_provider/path_provider.dart';
-import 'package:signup/models/bnk_transaction.dart';
+import 'package:expense_app_new/models/bnk_transaction.dart';
 import 'package:sqflite/sqflite.dart';
 
 class DatabaseHelper {

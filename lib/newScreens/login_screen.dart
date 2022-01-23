@@ -1,11 +1,12 @@
+import 'package:expense_app_new/newScreens/reset_password_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:signup/Screens/WelcomeHome/welcome_home_screen.dart';
-import 'package:signup/Screens/home_screen.dart';
-import 'package:signup/constants.dart';
-import 'package:signup/newScreens/registration_screen.dart';
+import 'package:expense_app_new/Screens/WelcomeHome/welcome_home_screen.dart';
+import 'package:expense_app_new/Screens/home_screen.dart';
+import 'package:expense_app_new/constants.dart';
+import 'package:expense_app_new/newScreens/registration_screen.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class NewLoginScreen extends StatefulWidget {
@@ -151,6 +152,28 @@ class _NewLoginScreenState extends State<NewLoginScreen> {
                     passwordField,
                     const SizedBox(height: 25),
                     loginButton,
+                    const SizedBox(height: 5),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        // Text("Forgotten Password?", style: GoogleFonts.raleway(
+                        //     textStyle:const TextStyle(color: Colors.black))),
+                        GestureDetector(
+                          child: Text(
+                            "Forgot Password?",
+                            style: GoogleFonts.raleway(
+                              textStyle:const TextStyle(
+                                color: Colors.deepPurple,
+                                fontWeight: FontWeight.w800,
+                              ),
+                            ),
+                          ),
+                          onTap: () {
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => const ResetPasswordScreen()));
+                          },
+                        ),
+                      ],
+                    ),
                     const SizedBox(height: 25),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,

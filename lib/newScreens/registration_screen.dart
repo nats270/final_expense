@@ -3,10 +3,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:signup/Screens/Welcome/welcome_screen.dart';
-import 'package:signup/Screens/WelcomeHome/welcome_home_screen.dart';
-import 'package:signup/Screens/home_screen.dart';
-import 'package:signup/models/user_model.dart';
+import 'package:expense_app_new/Screens/Welcome/welcome_screen.dart';
+import 'package:expense_app_new/Screens/WelcomeHome/welcome_home_screen.dart';
+import 'package:expense_app_new/Screens/home_screen.dart';
+import 'package:expense_app_new/models/user_model.dart';
 
 class RegistrationScreen extends StatefulWidget {
   const RegistrationScreen({Key key}) : super(key: key);
@@ -160,7 +160,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
             borderRadius: BorderRadius.circular(10),
           )),
     );
-    final signupButton = Material(
+    final expense_app_newButton = Material(
       elevation: 5,
       borderRadius: BorderRadius.circular(10),
       color: Colors.deepPurple,
@@ -172,7 +172,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
           style: TextStyle(fontSize: 20, color: Colors.white),
         ),
         onPressed: () {
-          signUp(emailEdittingController.text, passwordEdittingController.text);
+          signup(emailEdittingController.text, passwordEdittingController.text);
         },
       ),
     );
@@ -220,7 +220,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     const SizedBox(height: 5),
                     confirmpasswordField,
                     const SizedBox(height: 5),
-                    signupButton,
+                    expense_app_newButton,
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: const [],
@@ -235,7 +235,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     );
   }
 
-  void signUp(String email, String password) async {
+  void signup(String email, String password) async {
     if (_formKey.currentState.validate()) {
       try {
         await _auth.createUserWithEmailAndPassword(email: email, password: password).then((value) => {postDetailsToFirestore()}).catchError((e) {

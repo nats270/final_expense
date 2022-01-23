@@ -1,5 +1,5 @@
 import 'package:fl_chart/fl_chart.dart';
-import 'package:signup/models/details.dart';
+import 'package:expense_app_new/models/details.dart';
 
 List<PieChartSectionData> getSections() => PieData.details
     .asMap()

@@ -1,8 +1,8 @@
 //import './models/details.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:signup/models/details.dart';
-import 'package:signup/utils/database_helper.dart';
+import 'package:expense_app_new/models/details.dart';
+import 'package:expense_app_new/utils/database_helper.dart';
 
 import '../constants.dart';
 

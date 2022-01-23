@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:signup/models/details.dart';
+import 'package:expense_app_new/models/details.dart';
 import 'package:sqflite/sqflite.dart';
 
 class DatabaseHelper {

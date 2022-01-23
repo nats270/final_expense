@@ -3,11 +3,11 @@ import 'dart:core';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:signup/Screens/WelcomeHome/components/background.dart';
-import 'package:signup/components/rounded_button.dart';
-import 'package:signup/constants.dart';
-import 'package:signup/newScreens/login_screen.dart';
-//import 'package:signup/newScreens/registration_screen.dart';
+import 'package:expense_app_new/Screens/WelcomeHome/components/background.dart';
+import 'package:expense_app_new/components/rounded_button.dart';
+import 'package:expense_app_new/constants.dart';
+import 'package:expense_app_new/newScreens/login_screen.dart';
+//import 'package:expense_app_new/newScreens/registration_screen.dart';
 import '../../home_screen.dart';
 
 class Body extends StatelessWidget {
@@ -45,8 +45,8 @@ class Body extends StatelessWidget {
             //     )),
             RoundedButton(
               text: "Welcome",
-              color: kPrimaryLightColor,
-              textColor: kPrimaryColor,
+              color: kPrimaryColor,
+              textColor: kPrimaryLightColor,
               press: () {
                 Navigator.push(
                   context,
@@ -78,7 +78,7 @@ class Body extends StatelessWidget {
             // Text("email"),
             // RoundedButton(
             //   text:
-            //   'SignUP',
+            //   'expense_app_new',
             //   color: kPrimaryLightColor,
             //   textColor: kPrimaryColor,
             //   press: () {

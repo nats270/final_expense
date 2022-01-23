@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:signup/Screens/home_screen.dart';
-import 'package:signup/constants.dart';
-import 'package:signup/models/bnk_transaction.dart';
-import 'package:signup/newScreens/bank_list_item.dart';
-import 'package:signup/utilstwo/database_helper.dart';
-import 'package:signup/utilstwo/values.dart';
+import 'package:expense_app_new/Screens/home_screen.dart';
+import 'package:expense_app_new/constants.dart';
+import 'package:expense_app_new/models/bnk_transaction.dart';
+import 'package:expense_app_new/newScreens/bank_list_item.dart';
+import 'package:expense_app_new/utilstwo/database_helper.dart';
+import 'package:expense_app_new/utilstwo/values.dart';
 import 'package:sms_advanced/sms_advanced.dart';
 import 'package:sqflite/sqflite.dart';
 
