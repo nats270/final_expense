@@ -1,8 +1,8 @@
 //import './models/details.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:expense_app_new/models/details.dart';
-import 'package:expense_app_new/utils/database_helper.dart';
+import 'package:signup/models/details.dart';
+import 'package:signup/utils/auth_database_helper.dart';
 
 import '../constants.dart';
 
@@ -36,7 +36,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Details _details = Details(amount: '', date: '', itemslist: '', items: '', id: 1);
   List<Details> _detail = [];
-  DatabaseHelper _dbHelper;
+  AuthDatabaseHelper _dbHelper;
 
   final _formKey = GlobalKey<FormState>();
   final _ctrlAmount = TextEditingController();
@@ -45,7 +45,7 @@ class _MyHomePageState extends State<MyHomePage> {
   void initState() {
     super.initState();
     setState(() {
-      _dbHelper = DatabaseHelper.instance;
+      _dbHelper = AuthDatabaseHelper.instance;
     });
     _refreshDetailsList();
   }
@@ -77,25 +77,21 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       backgroundColor: Colors.grey[200],
       appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          color: Colors.deepPurple,
-          onPressed: (){
-            Navigator.pop(context);
-          },),
+        iconTheme: const IconThemeData(color: Colors.purple),
         backgroundColor: kPrimaryLightColor,
         title: Center(
           child: Text(
             widget.title,
-            style: GoogleFonts.raleway(textStyle:TextStyle(
-              color: kPrimaryColor,
-            ),),
+            style: GoogleFonts.raleway(
+              textStyle: const TextStyle(color: kPrimaryColor),
+            ),
           ),
         ),
         actions: [
           IconButton(
-            icon: Icon(Icons.savings,
-              color: Colors.deepPurple,),)
+            icon: const Icon(Icons.savings),
+            onPressed: () {},
+          )
         ],
       ),
       // appBar: AppBar(
@@ -117,126 +113,6 @@ class _MyHomePageState extends State<MyHomePage> {
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
-
-  // _form() => Container(
-  //   color: Colors.white,
-  //   padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 30),
-  //   child: Form(
-  //     key: _formKey,
-  //     child: ListView(
-  //       shrinkWrap: true,
-  //       children: [
-  //         const Text('Add Expense Mode', style:TextStyle(color: Colors.deepPurple)),
-  //         Container(
-  //           padding: const EdgeInsets.only(top: 5, left: 3),
-  //           child: DropdownButtonFormField(
-  //             value: dropdownValueMode,
-  //             icon: const Icon(Icons.keyboard_arrow_down),
-  //             items: modes.map((String items) {
-  //               return DropdownMenuItem(
-  //                 value: items,
-  //                 child: Text(items),
-  //               );
-  //             }).toList(),
-  //             onSaved: (String newValue) => setState(() => _details.items = newValue),
-  //             onChanged: (String newValue) {
-  //               setState(() {
-  //                 dropdownValueMode = newValue;
-  //               });
-  //             },
-  //           ),
-  //         ),
-  //         const Text('Add Expense Category', style:TextStyle(color: Colors.deepPurple)),
-  //         Container(
-  //           padding: const EdgeInsets.only(top: 5, left: 3),
-  //           child: DropdownButtonFormField(
-  //             value: dropdownValueCategory,
-  //             icon: const Icon(Icons.keyboard_arrow_down),
-  //             items: categories.map((itemsList) {
-  //               return DropdownMenuItem(
-  //                 value: itemsList,
-  //                 child: Text(itemsList),
-  //               );
-  //             }).toList(),
-  //             onSaved: (String newValue) => setState(() => _details.itemslist = newValue),
-  //             onChanged: (String newValue) {
-  //               setState(
-  //                     () {
-  //                   dropdownValueCategory = newValue;
-  //                 },
-  //               );
-  //             },
-  //           ),
-  //         ),
-  //         SingleChildScrollView(
-  //           child: TextFormField(
-  //             controller: _ctrlAmount,
-  //             keyboardType: TextInputType.number,
-  //             cursorColor: Colors.deepPurple,
-  //             validator: (value) {
-  //               if (value == null || value.isEmpty) {
-  //                 return 'please enter amount';
-  //               }
-  //               return null;
-  //             },
-  //             decoration: const InputDecoration(
-  //               labelText: 'Enter amount ',
-  //               labelStyle: TextStyle(color: Colors.deepPurple),
-  //             ),
-  //             onSaved: (val) => setState(() => _details.amount = val),
-  //           ),
-  //         ),
-  //         TextFormField(
-  //           controller: dateCtl,
-  //           validator: (value) {
-  //             if (value == null || value.isEmpty) {
-  //               return 'please enter date';
-  //             }
-  //             return null;
-  //           },
-  //           decoration: const InputDecoration(
-  //             labelStyle: TextStyle(color: Colors.deepPurple),
-  //             labelText: "Date of Transaction",
-  //             hintText: "Enter date",
-  //           ),
-  //           onTap: () async {
-  //             DateTime date = DateTime(1900);
-  //             FocusScope.of(context).requestFocus(FocusNode());
-  //
-  //             date = (await showDatePicker(context: context, initialDate: DateTime.now(), firstDate: DateTime(1900), lastDate: DateTime(2100)));
-  //
-  //             dateCtl.text = date.toString().substring(0, 11);
-  //           },
-  //           onSaved: (dateCtl) => setState(() => _details.date = dateCtl),
-  //         ),
-  //         Row(
-  //             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-  //             children: [
-  //               RaisedButton.icon(
-  //                 onPressed: () {
-  //                   _onAdd();
-  //                 },
-  //                 //Navigator.of(context).push(MaterialPageRoute(builder: (_) => ListPage()));
-  //                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-  //                 color: Colors.deepPurple,
-  //                 icon: const Icon(Icons.add, color: Colors.white),
-  //                 label: const Text('ADD', style: TextStyle(color: Colors.white)),
-  //               ),
-  //               RaisedButton.icon(
-  //                 onPressed: () {
-  //                   //Navigator.of(context).push(MaterialPageRoute(builder: (_) => Expense()));
-  //                   //Navigator.of(context).push(MaterialPageRoute(builder: (_) => PieChartPage()));
-  //                 },
-  //                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-  //                 color: Colors.deepPurple,
-  //                 icon: const Icon(Icons.refresh, color: Colors.white),
-  //                 label: const Text('REFRESH', style: TextStyle(color: Colors.white)),
-  //               ),
-  //             ]),
-  //       ],
-  //     ),
-  //   ),
-  // );
 
   _refreshDetailsList() async {
     List<Details> x = await _dbHelper.fetchDetail();

@@ -1,42 +1,26 @@
-//import './models/details.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:expense_app_new/constants.dart';
-import 'package:expense_app_new/models/details.dart';
-import 'package:expense_app_new/utils/database_helper.dart';
-import 'package:expense_app_new/widgets/list.dart';
+import 'package:signup/constants.dart';
+import 'package:signup/models/details.dart';
+import 'package:signup/utils/auth_database_helper.dart';
 
 const deepPurpleColor = Colors.deepPurple;
 
-void main() {
-  runApp(const MyAppp());
-}
+class OptionsPage extends StatefulWidget {
+  static const routeName = "/options-page";
 
-class MyAppp extends StatelessWidget {
-  const MyAppp({Key key}) : super(key: key);
-
-  // This widget is the root of your application.
-  @override
-  Widget build(BuildContext context) {
-    return const MyHomePage(title: 'Expense List');
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key key, this.title}) : super(key: key);
-
-  final String title;
+  const OptionsPage({Key key}) : super(key: key);
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<OptionsPage> createState() => _OptionsPageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _OptionsPageState extends State<OptionsPage> {
   TextEditingController dateCtl = TextEditingController();
 
   Details _details = Details(amount: '', date: '', itemslist: '', items: '', id: 1);
   List<Details> _detail = [];
-  DatabaseHelper _dbHelper;
+  AuthDatabaseHelper _dbHelper;
 
   final _formKey = GlobalKey<FormState>();
   final _ctrlAmount = TextEditingController();
@@ -45,8 +29,7 @@ class _MyHomePageState extends State<MyHomePage> {
   void initState() {
     super.initState();
     setState(() {
-      //print('db location :' +dataDirectory.path);
-      _dbHelper = DatabaseHelper.instance;
+      _dbHelper = AuthDatabaseHelper.instance;
     });
     _refreshDetailsList();
   }
@@ -75,45 +58,30 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final title = ModalRoute.of(context).settings.arguments as String;
     return Scaffold(
       backgroundColor: Colors.grey[200],
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back),
           color: Colors.deepPurple,
-          onPressed: (){
+          onPressed: () {
             Navigator.pop(context);
-          },),
+          },
+        ),
         backgroundColor: kPrimaryLightColor,
         title: Center(
           child: Text(
-            widget.title,
-            style: GoogleFonts.raleway(textStyle:TextStyle(
-              color: kPrimaryColor,
-            ),),
+            title,
+            style: GoogleFonts.raleway(
+              textStyle: const TextStyle(color: kPrimaryColor),
+            ),
           ),
         ),
-       actions: [
-         IconButton(
-           icon: Icon(Icons.savings,
-           color: Colors.deepPurple,),)
-       ],
       ),
       body: Column(
         children: <Widget>[_form(), list()],
       ),
-      bottomNavigationBar: BottomAppBar(
-        color: kPrimaryLightColor,
-        child: IconButton(
-          icon: Icon(
-              Icons.refresh,
-              color: kPrimaryColor,
-          ),
-          onPressed: (){
-            Navigator.of(context).push(MaterialPageRoute(builder: (_) => const ListPage()));
-          },
-        ),
-      ),// This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 
@@ -208,40 +176,24 @@ class _MyHomePageState extends State<MyHomePage> {
                 },
                 onSaved: (dateCtl) => setState(() => _details.date = dateCtl),
               ),
-              SizedBox(height: 10,),
-              Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
-
-                CircleAvatar(
-                  backgroundColor: kPrimaryLightColor,
-                  child: IconButton(
-                      onPressed: (){
+              const SizedBox(height: 10),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  CircleAvatar(
+                    backgroundColor: kPrimaryLightColor,
+                    child: IconButton(
+                      onPressed: () {
                         _onAdd();
-                  },
-                      icon: const Icon(Icons.add, color: kPrimaryColor ,),
+                      },
+                      icon: const Icon(
+                        Icons.add,
+                        color: kPrimaryColor,
+                      ),
+                    ),
                   ),
-                ),
-
-                // RaisedButton.icon(
-                //   onPressed: () {
-                //     _onAdd();
-                //   },
-                //   //Navigator.of(context).push(MaterialPageRoute(builder: (_) => ListPage()));
-                //   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-                //   color: Colors.deepPurple,
-                //   icon: const Icon(Icons.add, color: Colors.white),
-                //   label: const Text('ADD', style: TextStyle(color: Colors.white)),
-                // ),
-                // RaisedButton.icon(
-                //   onPressed: () {
-                //     Navigator.of(context).push(MaterialPageRoute(builder: (_) => const ListPage()));
-                //     //Navigator.of(context).push(MaterialPageRoute(builder: (_) => PieChartPage()));
-                //   },
-                //   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-                //   color: Colors.deepPurple,
-                //   icon: const Icon(Icons.refresh, color: Colors.white),
-                //   label: const Text('REFRESH', style: TextStyle(color: Colors.white)),
-                // ),
-              ]),
+                ],
+              ),
             ],
           ),
         ),

@@ -1,16 +1,21 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:expense_app_new/constants.dart';
 import 'package:google_fonts/google_fonts.dart';
-//import 'Screens/Welcome/welcome_screen.dart';
-import 'Screens/WelcomeHome/welcome_home_screen.dart';
+import 'package:signup/Screens/home_screen.dart';
+import 'package:signup/Screens/login_screen.dart';
+import 'package:signup/Screens/monthwise_transaction_page.dart';
+import 'package:signup/Screens/option_page.dart';
+import 'package:signup/Screens/registration_screen.dart';
+import 'package:signup/Screens/reset_password_screen.dart';
+import 'package:signup/Screens/sync_sms_screen.dart';
+
+import 'constants.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   runApp(const MyApp());
 }
-
 
 class MyApp extends StatelessWidget {
   const MyApp({Key key}) : super(key: key);
@@ -23,14 +28,19 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Auth',
       theme: ThemeData(
         canvasColor: kPrimaryLightColor,
-        //static const MaterialColor _2A363B = MaterialColor(0xff2A363B, colorMap);
         primaryColor: kPrimaryColor,
-        //primarySwatch: kPrimaryLightColor,
         textTheme: GoogleFonts.ralewayTextTheme(Theme.of(context).textTheme),
-        //scaffoldBackgroundColor: Colors.white,
       ),
-      //home: const NewLoginScreen(),
-      home: const WelcomeHomeScreen(),
+      initialRoute: LoginScreen.routeName,
+      routes: {
+        HomeScreen.routeName: (_) => const HomeScreen(),
+        LoginScreen.routeName: (_) => const LoginScreen(),
+        MonthWiseTransactionPage.routeName: (_) => const MonthWiseTransactionPage(),
+        OptionsPage.routeName: (_) => const OptionsPage(),
+        RegistrationScreen.routeName: (_) => const RegistrationScreen(),
+        SyncSmsScreen.routeName: (_) => const SyncSmsScreen(),
+        ResetPasswordScreen.routeName: (_) => const ResetPasswordScreen(),
+      },
     );
   }
 }
