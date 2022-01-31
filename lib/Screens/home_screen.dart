@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:signup/Screens/expense_list_page.dart';
 import 'package:signup/Screens/monthwise_transaction_page.dart';
-import 'package:signup/widgets/list.dart';
+import 'package:signup/utils/txn_database_helper.dart';
 import 'package:signup/widgets/navigation_drawer.dart';
 
-import '../../Screens/option_page.dart';
 import '../constants.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -22,14 +22,7 @@ class _HomeScreenState extends State<HomeScreen> {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        title: const Text(
-          "Expense Tracker",
-          style: TextStyle(color: kPrimaryColor),
-        ),
-        backgroundColor: kPrimaryLightColor,
-        iconTheme: const IconThemeData(color: kPrimaryColor),
-      ),
+      appBar: AppBar(title: const Text("Expense Tracker")),
       drawer: const NavigationDrawer(),
       body: Column(
         children: [
@@ -43,7 +36,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   decoration: TextDecoration.none,
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
-                  color: Colors.deepPurple,
+                  color: kPrimaryColor,
                 ),
               ),
             ),
@@ -52,31 +45,28 @@ class _HomeScreenState extends State<HomeScreen> {
           Expanded(
             child: Padding(
               padding: const EdgeInsets.only(top: 10),
-              child: Image.asset(
-                "assets/images/img.png",
-                width: size.width * 0.8,
-              ),
+              child: Image.asset("assets/images/img.png", width: size.width * 0.8),
             ),
-          ),
-          menuItem(
-            Icons.add,
-            'Add Expenses',
-            () {
-              Navigator.of(context).pushNamed(OptionsPage.routeName, arguments: "Add Expenses");
-            },
           ),
           menuItem(
             Icons.shopping_cart,
             'All Expenses',
-            () {
-              Navigator.of(context).push(MaterialPageRoute(builder: (_) => const ListPage()));
-            },
+            () => Navigator.of(context).pushNamed(ExpenseListPage.routeName),
           ),
           menuItem(
             Icons.money,
             "SMS Transactions",
-            () {
-              Navigator.of(context).pushNamed(MonthWiseTransactionPage.routeName);
+            () => Navigator.of(context).pushNamed(MonthWiseTransactionPage.routeName),
+          ),
+          menuItem(
+            Icons.refresh,
+            "Sync Data",
+            () async {
+              await TransactionDatabaseHelper.syncFirebaseRecords();
+              await ExpenseDatabaseHelper.syncFirebaseRecords();
+              ScaffoldMessenger.of(context)
+                ..hideCurrentSnackBar()
+                ..showSnackBar(const SnackBar(content: Text("Sync Complete")));
             },
           ),
         ],

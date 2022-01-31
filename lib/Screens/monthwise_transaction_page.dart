@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:signup/models/bnk_transaction.dart';
 import 'package:signup/utils/txn_database_helper.dart';
 import 'package:signup/utils/txn_utils.dart';
-import 'package:signup/utils/values.dart';
 
 import '../constants.dart';
 
@@ -22,24 +22,14 @@ class _MonthWiseTransactionPageState extends State<MonthWiseTransactionPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: kPrimaryLightColor,
-        title: const Text(
-          "Month-wise Transactions",
-          style: TextStyle(color: kPrimaryColor),
-        ),
-        leading: IconButton(
-          icon: const Icon(
-            Icons.arrow_back,
-            color: Colors.deepPurple,
-          ),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-        ),
+        title: const Text("Month-wise Transactions"),
         actions: [
           IconButton(
             onPressed: () async {
               await TransactionDatabaseHelper.syncFirebaseRecords();
+              ScaffoldMessenger.of(context)
+                ..hideCurrentSnackBar()
+                ..showSnackBar(const SnackBar(content: Text("Sync Complete")));
               setState(() {});
             },
             icon: const Icon(
@@ -52,7 +42,7 @@ class _MonthWiseTransactionPageState extends State<MonthWiseTransactionPage> {
       body: FutureBuilder<List<BankTransaction>>(
         future: TransactionDatabaseHelper.getAllSqliteTransactions(),
         builder: (ctx, snapshot) {
-          final data = snapshot.connectionState == ConnectionState.done ? TransactionGroupUp.groupSmsFromTransactions(snapshot.data) : null;
+          final data = snapshot.connectionState == ConnectionState.done ? GroupUpUtil.groupSmsFromTransactions(snapshot.data) : null;
           return data == null
               ? const Center(child: CircularProgressIndicator())
               : ListView.separated(
@@ -89,35 +79,42 @@ class _YearWiseMonthWiseBankWiseTxn extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
-                      monthMap[e.key],
-                      style: const TextStyle(fontSize: 18),
+                      DateFormat("MMMM").format(DateTime(DateTime.now().year, e.key)),
+                      style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
                     ...e.value.entries
                         .map(
-                          (e) => Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Text(e.key),
-                              Builder(builder: (c_) {
-                                final val = e.value.fold<Map<String, double>>(
-                                  {"debit": 0, "credit": 0},
-                                  (previousValue, element) {
-                                    if (element.debitedAmt != null) {
-                                      previousValue["debit"] += element.debitedAmt;
-                                    } else {
-                                      previousValue["credit"] += element.creditedAmt;
-                                    }
-                                    return previousValue;
-                                  },
-                                );
-                                return Row(
+                          (e) => Builder(
+                            builder: (c_) {
+                              final val = e.value.fold<Map<String, double>>(
+                                {"debit": 0, "credit": 0},
+                                (previousValue, element) {
+                                  if (element.debitedAmt != null) {
+                                    previousValue["debit"] += element.debitedAmt;
+                                  } else {
+                                    previousValue["credit"] += element.creditedAmt;
+                                  }
+                                  return previousValue;
+                                },
+                              );
+                              return IntrinsicHeight(
+                                child: Row(
                                   children: [
-                                    Expanded(child: Text("Debit: ${val["debit"]}")),
-                                    Expanded(child: Text("Credit: ${val["credit"]}")),
+                                    Text(
+                                      e.key,
+                                      style: const TextStyle(fontWeight: FontWeight.bold),
+                                    ),
+                                    const VerticalDivider(),
+                                    Expanded(
+                                      child: Text("Debit: ${val["debit"].toStringAsFixed(2)}", textAlign: TextAlign.right),
+                                    ),
+                                    Expanded(
+                                      child: Text("Credit: ${val["credit"].toStringAsFixed(2)}", textAlign: TextAlign.right),
+                                    ),
                                   ],
-                                );
-                              }),
-                            ],
+                                ),
+                              );
+                            },
                           ),
                         )
                         .toList(),

@@ -3,12 +3,16 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:signup/Screens/login_screen.dart';
 import 'package:signup/Screens/sync_sms_screen.dart';
 import 'package:signup/models/user_model.dart';
 import 'package:signup/utils/auth_database_helper.dart';
 
+import '../constants.dart';
+
 class RegistrationScreen extends StatefulWidget {
   static const routeName = "/registration-screen";
+
   const RegistrationScreen({Key key}) : super(key: key);
 
   @override
@@ -125,18 +129,18 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
       },
       textInputAction: TextInputAction.next,
       decoration: InputDecoration(
-          prefixIcon: const Icon(Icons.vpn_key),
-          contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
-          hintText: 'Password',
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
-          )),
+        prefixIcon: const Icon(Icons.vpn_key),
+        contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
+        hintText: 'Password',
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
+      ),
     );
 
     final confirmpasswordField = TextFormField(
       autofocus: false,
       controller: confirmPasswordEditingController,
-      //keyboardType: TextInputType.text,
       obscureText: true,
       validator: (value) {
         if (confirmPasswordEditingController.text != passwordEditingController.text) {
@@ -144,23 +148,23 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         }
         return null;
       },
-
       onSaved: (value) {
         confirmPasswordEditingController.text = value;
       },
       textInputAction: TextInputAction.done,
       decoration: InputDecoration(
-          prefixIcon: const Icon(Icons.vpn_key),
-          contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
-          hintText: 'Confirm Password',
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
-          )),
+        prefixIcon: const Icon(Icons.vpn_key),
+        contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
+        hintText: 'Confirm Password',
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
+      ),
     );
     final signUpButton = Material(
       elevation: 5,
       borderRadius: BorderRadius.circular(10),
-      color: Colors.deepPurple,
+      color: kPrimaryColor,
       child: MaterialButton(
         padding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
         minWidth: MediaQuery.of(context).size.width * 0.4,
@@ -174,25 +178,17 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
       ),
     );
 
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.deepPurple,
-        elevation: 0,
-        leading: IconButton(
-          icon: const Icon(
-            Icons.arrow_back,
-            color: Colors.white,
-          ),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
+    return WillPopScope(
+      onWillPop: () {
+        Navigator.of(context).pushReplacementNamed(LoginScreen.routeName);
+        return Future.value(false);
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text("Sign Up"),
         ),
-      ),
-      backgroundColor: Colors.deepPurple,
-      body: Center(
-        child: SingleChildScrollView(
-          child: Container(
-            color: Colors.white,
+        body: Center(
+          child: SingleChildScrollView(
             child: Padding(
               padding: const EdgeInsets.all(36.0),
               child: Form(

@@ -25,29 +25,26 @@ class _SyncSmsScreenState extends State<SyncSmsScreen> {
       body: Stack(
         alignment: Alignment.center,
         children: <Widget>[
-          Positioned(
-            top: 0,
-            left: 0,
-            child: Image.asset(
-              "assets/images/main_top.png",
-              width: size.width * 0.3,
-            ),
-          ),
-          Positioned(
-            bottom: 0,
-            left: 0,
-            child: Image.asset("assets/images/main_bottom.png"),
-            width: size.width * 0.2,
-          ),
+          // Center(
+          //   child: Image.asset(
+          //     "assets/images/main_top.png",
+          //     width: size.width * 0.3,
+          //   ),
+          // ),
+          // Positioned(
+          //   child: Image.asset("assets/images/main_bottom.png"),
+          //   width: size.width * 0.2,
+          // ),
           Opacity(
             opacity: loading ? 0.5 : 1.0,
-            child: SingleChildScrollView(
+            child: SizedBox(
+              width: double.infinity,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   const Text(
                     'EXPENSE TRACKER',
-                    style: TextStyle(fontWeight: FontWeight.w800),
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 40),
                   ),
                   SizedBox(height: size.height * 0.03),
                   SvgPicture.asset(
@@ -56,7 +53,7 @@ class _SyncSmsScreenState extends State<SyncSmsScreen> {
                   ),
                   SizedBox(height: size.height * 0.03),
                   RoundedButton(
-                    text: "Sync SMS",
+                    text: "Sync Data",
                     color: kPrimaryColor,
                     textColor: kPrimaryLightColor,
                     press: () async {
@@ -64,6 +61,7 @@ class _SyncSmsScreenState extends State<SyncSmsScreen> {
                         loading = true;
                       });
                       await TransactionDatabaseHelper.syncFirebaseRecords();
+                      await ExpenseDatabaseHelper.syncFirebaseRecords();
                       setState(() {
                         loading = false;
                       });

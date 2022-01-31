@@ -70,7 +70,6 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
               fontSize: 20,
             ),
           ),
-          //style: TextStyle(fontSize: 20, color: Colors.white),
         ),
         onPressed: () {
           resetPass(emailEditingController.text);
@@ -79,25 +78,17 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
       ),
     );
 
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.deepPurple,
-        elevation: 0,
-        leading: IconButton(
-          icon: const Icon(
-            Icons.arrow_back,
-            color: Colors.white,
-          ),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
+    return WillPopScope(
+      onWillPop: () {
+        Navigator.of(context).pushReplacementNamed(LoginScreen.routeName);
+        return Future.value(false);
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text("Reset Password"),
         ),
-      ),
-      backgroundColor: Colors.deepPurple,
-      body: Center(
-        child: SingleChildScrollView(
-          child: Container(
-            color: Colors.white,
+        body: Center(
+          child: SingleChildScrollView(
             child: Padding(
               padding: const EdgeInsets.all(36.0),
               child: Form(

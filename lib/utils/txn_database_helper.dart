@@ -1,8 +1,7 @@
-import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:path/path.dart';
 import 'package:signup/models/bnk_transaction.dart';
+import 'package:signup/models/expense.dart';
 import 'package:signup/utils/auth_database_helper.dart';
 import 'package:signup/utils/permission_utils.dart';
 import 'package:signup/utils/txn_utils.dart';
@@ -21,8 +20,7 @@ class TransactionDatabaseHelper {
   }
 
   static Future<Database> _initializeDatabase() async {
-    Directory directory = Directory(await getDatabasesPath());
-    String path = join(directory.path, 'transactions.db');
+    String path = join(await getDatabasesPath(), 'transactions.db');
 
     var transactionsDatabase = openDatabase(path, version: 1, onCreate: _createDb);
     return transactionsDatabase;
@@ -120,6 +118,111 @@ creditedAmt REAL
       if (txn != null) {
         await _updateFirebaseTxn(txn);
         await insertTxn(txn);
+      }
+    }
+  }
+}
+
+class ExpenseDatabaseHelper {
+  // Sqlite Part
+  static const _tableName = "manual_expenses";
+  static const _databaseName = 'expenses.db';
+  static const _databaseVersion = 1;
+
+  static Database _databaseInstance;
+
+  static Future<Database> get _database async {
+    if (_databaseInstance != null) return _databaseInstance;
+    _databaseInstance = await _initDatabase();
+    return _databaseInstance;
+  }
+
+  static Future<Database> _initDatabase() async {
+    String dbPath = join(await getDatabasesPath(), _databaseName);
+    return await openDatabase(dbPath, version: _databaseVersion, onCreate: _onCreateDB);
+  }
+
+  static void _onCreateDB(Database db, int version) async {
+    await db.execute('''CREATE TABLE $_tableName(
+id TEXT PRIMARY KEY,
+expenseMode TEXT NOT NULL,
+expenseCategory TEXT NOT NULL,
+date TEXT NOT NULL,
+amount REAL NOT NULL
+)''');
+  }
+
+  static Future<void> _insertSqliteExpense(Expense exp) async {
+    Database db = await _database;
+    await db.insert(_tableName, exp.toMap());
+  }
+
+  static Future<void> _updateSqliteExpense(Expense exp) async {
+    Database db = await _database;
+    await db.update(_tableName, exp.toMap(), where: 'id=?', whereArgs: [exp.id]);
+  }
+
+  static Future<void> _deleteSqliteExpense(Expense exp) async {
+    Database db = await _database;
+    await db.delete(_tableName, where: 'id=?', whereArgs: [exp.id]);
+  }
+
+  static Future<List<Expense>> fetchAllSqliteRecords() async {
+    Database db = await _database;
+    List<Map<String, dynamic>> detail = await db.query(_tableName);
+    return detail.isEmpty ? [] : detail.map((e) => Expense.fromMap(e)).toList();
+  }
+
+  static Future<int> _deleteSqliteRecords() async {
+    Database db = await _database;
+    int result = await db.delete(_tableName);
+    return result;
+  }
+
+  // Firebase Part
+  static final _firebaseFireStore = FirebaseFirestore.instance;
+  static final _expenseCollection = _firebaseFireStore.collection('transactions').doc(FirebaseAuthService.currentUser.uid).collection("expenses");
+
+  static Future<void> _updateFirebaseExpense(Expense exp) async {
+    final doc = _expenseCollection.doc(exp.id);
+    exp.id ??= doc.id;
+    if ((await doc.get()).exists) {
+      doc.update(exp.toMap());
+    } else {
+      doc.set(exp.toMap());
+    }
+  }
+
+  static Future<void> _deleteFirebaseExpense(Expense exp) async {
+    final doc = _expenseCollection.doc(exp.id);
+    if ((await doc.get()).exists) {
+      await doc.delete();
+    }
+  }
+
+  // combo
+  static Future<void> insertExpense(Expense exp) async {
+    await _updateFirebaseExpense(exp);
+    await _insertSqliteExpense(exp);
+  }
+
+  static Future<void> updateExpense(Expense exp) async {
+    await _updateFirebaseExpense(exp);
+    await _updateSqliteExpense(exp);
+  }
+
+  static Future<void> deleteExpense(Expense exp) async {
+    await _deleteSqliteExpense(exp);
+    _deleteFirebaseExpense(exp);
+  }
+
+  static Future syncFirebaseRecords() async {
+    final exps = await fetchAllSqliteRecords();
+    final expIds = exps.map((e) => e.id).toList();
+    final docs = (await _expenseCollection.snapshots().first).docs;
+    for (final doc in docs) {
+      if (!expIds.contains(doc.id)) {
+        _insertSqliteExpense(Expense.fromMap(doc.data()));
       }
     }
   }

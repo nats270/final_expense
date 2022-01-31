@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:signup/Screens/expense_analysis_report_screen.dart';
 import 'package:signup/Screens/home_screen.dart';
 import 'package:signup/Screens/login_screen.dart';
-import 'package:signup/analysis/analysis_report.dart';
-import 'package:signup/analysis/sms_report.dart';
+import 'package:signup/Screens/sms_analysis_report_screen.dart';
 import 'package:signup/utils/auth_database_helper.dart';
 
 import '../constants.dart';
@@ -38,7 +38,7 @@ class NavigationDrawer extends StatelessWidget {
                     ),
                     title: const Text('Expense Analysis Report', style: TextStyle(color: kPrimaryLightColor)),
                     onTap: () {
-                      Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (_) => const AnalysisReport()));
+                      Navigator.of(context).pushReplacementNamed(ExpenseAnalysisReportScreen.routeName);
                     },
                   ),
                   ListTile(
@@ -48,7 +48,7 @@ class NavigationDrawer extends StatelessWidget {
                     ),
                     title: const Text('SMS Analysis Report', style: TextStyle(color: kPrimaryLightColor)),
                     onTap: () {
-                      Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (_) => const SmsReport()));
+                      Navigator.of(context).pushReplacementNamed(SMSAnalysisReportScreen.routeName);
                     },
                   ),
                   ListTile(

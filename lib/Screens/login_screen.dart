@@ -108,7 +108,6 @@ class _LoginScreenState extends State<LoginScreen> {
               fontSize: 20,
             ),
           ),
-          //style: TextStyle(fontSize: 20, color: Colors.white),
         ),
         onPressed: () {
           signIn(emailController.text, passwordController.text);
@@ -117,7 +116,6 @@ class _LoginScreenState extends State<LoginScreen> {
     );
 
     return Scaffold(
-      backgroundColor: Colors.deepPurple,
       body: Center(
         child: SingleChildScrollView(
           child: Container(
@@ -134,13 +132,13 @@ class _LoginScreenState extends State<LoginScreen> {
                       "EXPENSE TRACKER",
                       style: GoogleFonts.raleway(
                         textStyle: const TextStyle(
-                          color: Colors.deepPurple,
+                          color: kPrimaryColor,
                           fontWeight: FontWeight.w800,
                           //fontStyle: FontStyle.italic,
                           fontSize: 30,
                         ),
                       ),
-                      //style: TextStyle(color: Colors.deepPurple, fontWeight: FontWeight.w800, fontSize: 26),
+                      //style: TextStyle(color: kPrimaryColor, fontWeight: FontWeight.w800, fontSize: 26),
                     ),
                     const SizedBox(height: 20),
                     SvgPicture.asset(
@@ -157,14 +155,12 @@ class _LoginScreenState extends State<LoginScreen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        // Text("Forgotten Password?", style: GoogleFonts.raleway(
-                        //     textStyle:const TextStyle(color: Colors.black))),
                         GestureDetector(
                           child: Text(
                             "Forgot Password?",
                             style: GoogleFonts.raleway(
                               textStyle: const TextStyle(
-                                color: Colors.deepPurple,
+                                color: kPrimaryColor,
                                 fontWeight: FontWeight.w800,
                               ),
                             ),
@@ -185,14 +181,14 @@ class _LoginScreenState extends State<LoginScreen> {
                             "Sign UP",
                             style: GoogleFonts.raleway(
                               textStyle: const TextStyle(
-                                color: Colors.deepPurple,
+                                color: kPrimaryColor,
                                 fontWeight: FontWeight.w800,
                                 fontStyle: FontStyle.italic,
                               ),
                             ),
                           ),
                           onTap: () {
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => const RegistrationScreen()));
+                            Navigator.of(context).pushReplacementNamed(RegistrationScreen.routeName);
                           },
                         ),
                       ],

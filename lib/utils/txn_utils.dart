@@ -1,7 +1,11 @@
+import 'dart:ui';
+
+import 'package:flutter/material.dart';
 import 'package:signup/models/bnk_transaction.dart';
+import 'package:signup/models/expense.dart';
 import 'package:sms_advanced/sms_advanced.dart';
 
-class TransactionSMSParser {
+class TransactionUtils {
   static const bankNameMap = {
     "BOIIND": 'BOI',
     "CANBNK": 'CANARA',
@@ -14,6 +18,37 @@ class TransactionSMSParser {
     "IndBnk": "INDIAN BANK",
     "CBoI": "CENTRAL"
   };
+
+  static Map<Color, double> totalAmounts(List<BankTransaction> txns) {
+    final map = <Color, double>{};
+    for (final txn in txns) {
+      if (txn.debitedAmt != null) {
+        map.update(Colors.red, (value) => value + txn.debitedAmt, ifAbsent: () => txn.debitedAmt);
+      } else {
+        map.update(Colors.green, (value) => value + txn.creditedAmt, ifAbsent: () => txn.creditedAmt);
+      }
+    }
+    map.putIfAbsent(Colors.red, () => 0);
+    map.putIfAbsent(Colors.green, () => 0);
+    return map;
+  }
+
+  static Map<Color, int> totalCount(List<BankTransaction> txns) {
+    final map = <Color, int>{};
+    for (final txn in txns) {
+      if (txn.debitedAmt != null) {
+        map.update(Colors.red, (value) => value + 1, ifAbsent: () => 1);
+      } else {
+        map.update(Colors.green, (value) => value + 1, ifAbsent: () => 1);
+      }
+    }
+    map.putIfAbsent(Colors.red, () => 0);
+    map.putIfAbsent(Colors.green, () => 0);
+    return map;
+  }
+}
+
+class TransactionSMSParser {
   static final List<RegExp> depositFormats = [
     RegExp(r"(INR|Rs\.|Rs) *\d+(,\d+)*\.?\d*.* has been DEPOSITED", caseSensitive: false),
     RegExp(r"(INR|Rs\.|Rs) *\d+(,\d+)*\.?\d*.* was DEPOSITED", caseSensitive: false),
@@ -54,9 +89,9 @@ class TransactionSMSParser {
     }
 
     final txn = BankTransaction();
-    for (final bankAddress in bankNameMap.keys) {
+    for (final bankAddress in TransactionUtils.bankNameMap.keys) {
       if (message.sender.toLowerCase().endsWith(bankAddress.toLowerCase())) {
-        txn.bank = bankNameMap[bankAddress];
+        txn.bank = TransactionUtils.bankNameMap[bankAddress];
         break;
       }
     }
@@ -98,7 +133,8 @@ class TransactionSMSParser {
   }
 }
 
-class TransactionGroupUp {
+class GroupUpUtil {
+  // bank transactions
   static Map<int, Map<int, Map<String, List<BankTransaction>>>> groupSmsFromMessages(List<SmsMessage> messages) {
     /*
     *
@@ -230,5 +266,43 @@ class TransactionGroupUp {
       map.update(txn.bank, (value) => value..add(txn), ifAbsent: () => [txn]);
     }
     return map;
+  }
+
+  // expenses
+  static Map<int, Map<int, List<Expense>>> groupExpenses(List<Expense> exps) {
+    /*
+    *
+    * return Structure:
+    *
+    * {
+    * year: {
+    *   month: [expenses]
+    * }
+    *
+    */
+
+    final result = <int, Map<int, List<Expense>>>{};
+    for (final txn in exps) {
+      if (txn == null) continue;
+      result.update(
+        txn.date.year,
+        (prevValue) => prevValue
+          ..update(
+            txn.date.month,
+            (prevValue) => prevValue..add(txn),
+            ifAbsent: () => [txn],
+          ),
+        ifAbsent: () {
+          final r = <int, List<Expense>>{};
+          r.update(
+            txn.date.month,
+            (prevValue) => prevValue..add(txn),
+            ifAbsent: () => [txn],
+          );
+          return r;
+        },
+      );
+    }
+    return result;
   }
 }
