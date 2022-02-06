@@ -10,11 +10,11 @@ import 'package:sqflite/sqflite.dart';
 
 class TransactionDatabaseHelper {
   // Sqlite Part
-  static Database _sqliteDatabaseInstance;
+  static Database ? _sqliteDatabaseInstance;
 
   static const String _tableName = "bnk_transactions";
 
-  static Future<Database> get _sqliteDatabase async {
+  static Future<Database?> get _sqliteDatabase async {
     _sqliteDatabaseInstance ??= await _initializeDatabase();
     return _sqliteDatabaseInstance;
   }
@@ -40,20 +40,20 @@ creditedAmt REAL
   }
 
   static Future<int> _insertSqliteTransaction(BankTransaction bnkTransaction) async {
-    Database db = await _sqliteDatabase;
-    var result = db.insert(_tableName, bnkTransaction.toMap());
+    Database? db = await _sqliteDatabase;
+    var result = db!.insert(_tableName, bnkTransaction.toMap());
     return result;
   }
 
   static Future<List<BankTransaction>> getAllSqliteTransactions() async {
-    Database db = await _sqliteDatabase;
-    var result = await db.query(_tableName);
+    Database? db = await _sqliteDatabase;
+    var result = await db!.query(_tableName);
     return result.map((e) => BankTransaction.fromMapObject(e)).toList();
   }
 
   static Future<List<BankTransaction>> getBankWiseTransactions(String bankName) async {
-    Database db = await _sqliteDatabase;
-    var result = await db.query(
+    Database? db = await _sqliteDatabase;
+    var result = await db!.query(
       _tableName,
       where: 'bank = ?',
       whereArgs: [bankName],
@@ -64,15 +64,15 @@ creditedAmt REAL
   }
 
   static Future<int> _deleteSqliteRecords() async {
-    Database db = await _sqliteDatabase;
-    int result = await db.delete(_tableName);
+    Database? db = await _sqliteDatabase;
+    int result = await db!.delete(_tableName);
     return result;
   }
 
   // Firebase Part
   static final _firebaseFireStore = FirebaseFirestore.instance;
 
-  static final _txnCollection = _firebaseFireStore.collection('transactions').doc(FirebaseAuthService.currentUser.uid).collection("userTxn");
+  static final _txnCollection = _firebaseFireStore.collection('transactions').doc(FirebaseAuthService.currentUser!.uid).collection("userTxn");
 
   static Future<void> _updateFirebaseTxn(BankTransaction transaction) async {
     final doc = _txnCollection.doc(transaction.id);
@@ -129,9 +129,9 @@ class ExpenseDatabaseHelper {
   static const _databaseName = 'expenses.db';
   static const _databaseVersion = 1;
 
-  static Database _databaseInstance;
+  static Database ? _databaseInstance;
 
-  static Future<Database> get _database async {
+  static Future<Database?> get _database async {
     if (_databaseInstance != null) return _databaseInstance;
     _databaseInstance = await _initDatabase();
     return _databaseInstance;
@@ -153,35 +153,35 @@ amount REAL NOT NULL
   }
 
   static Future<void> _insertSqliteExpense(Expense exp) async {
-    Database db = await _database;
-    await db.insert(_tableName, exp.toMap());
+    Database? db = await _database;
+    await db!.insert(_tableName, exp.toMap());
   }
 
   static Future<void> _updateSqliteExpense(Expense exp) async {
-    Database db = await _database;
-    await db.update(_tableName, exp.toMap(), where: 'id=?', whereArgs: [exp.id]);
+    Database? db = await _database;
+    await db!.update(_tableName, exp.toMap(), where: 'id=?', whereArgs: [exp.id]);
   }
 
   static Future<void> _deleteSqliteExpense(Expense exp) async {
-    Database db = await _database;
-    await db.delete(_tableName, where: 'id=?', whereArgs: [exp.id]);
+    Database? db = await _database;
+    await db!.delete(_tableName, where: 'id=?', whereArgs: [exp.id]);
   }
 
   static Future<List<Expense>> fetchAllSqliteRecords() async {
-    Database db = await _database;
-    List<Map<String, dynamic>> detail = await db.query(_tableName);
+    Database? db = await _database;
+    List<Map<String, dynamic>> detail = await db!.query(_tableName);
     return detail.isEmpty ? [] : detail.map((e) => Expense.fromMap(e)).toList();
   }
 
   static Future<int> _deleteSqliteRecords() async {
-    Database db = await _database;
-    int result = await db.delete(_tableName);
+    Database? db = await _database;
+    int result = await db!.delete(_tableName);
     return result;
   }
 
   // Firebase Part
   static final _firebaseFireStore = FirebaseFirestore.instance;
-  static final _expenseCollection = _firebaseFireStore.collection('transactions').doc(FirebaseAuthService.currentUser.uid).collection("expenses");
+  static final _expenseCollection = _firebaseFireStore.collection('transactions').doc(FirebaseAuthService.currentUser!.uid).collection("expenses");
 
   static Future<void> _updateFirebaseExpense(Expense exp) async {
     final doc = _expenseCollection.doc(exp.id);

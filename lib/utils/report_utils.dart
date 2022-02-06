@@ -59,7 +59,7 @@ class ReportUtils {
   static PieChart pieChartExpensesModeValueWise(List<Expense> exps) {
     final map = <Color, double>{};
     for (final exp in exps) {
-      map.update(Expense.expenseModeColors[exp.expenseMode], (value) => value + exp.amount, ifAbsent: () => exp.amount);
+      map.update(Expense.expenseModeColors[exp.expenseMode]!, (value) => value + exp.amount!, ifAbsent: () => exp.amount!);
     }
     return generalPieChart(map);
   }
@@ -67,7 +67,7 @@ class ReportUtils {
   static BarChart barChartExpensesModeValueWise(List<Expense> exps) {
     final map = <Color, double>{};
     for (final exp in exps) {
-      map.update(Expense.expenseModeColors[exp.expenseMode], (value) => value + exp.amount, ifAbsent: () => exp.amount);
+      map.update(Expense.expenseModeColors[exp.expenseMode]!, (value) => value + exp.amount!, ifAbsent: () => exp.amount!);
     }
     return generalBarChart(map);
   }
@@ -75,7 +75,7 @@ class ReportUtils {
   static PieChart pieChartExpensesCategoryValueWise(List<Expense> exps) {
     final map = <Color, double>{};
     for (final exp in exps) {
-      map.update(Expense.expenseCategoryColors[exp.expenseCategory], (value) => value + exp.amount, ifAbsent: () => exp.amount);
+      map.update(Expense.expenseCategoryColors[exp.expenseCategory]!, (value) => value + exp.amount!, ifAbsent: () => exp.amount!);
     }
     return generalPieChart(map);
   }
@@ -83,7 +83,7 @@ class ReportUtils {
   static BarChart barChartExpensesCategoryValueWise(List<Expense> exps) {
     final map = <Color, double>{};
     for (final exp in exps) {
-      map.update(Expense.expenseCategoryColors[exp.expenseCategory], (value) => value + exp.amount, ifAbsent: () => exp.amount);
+      map.update(Expense.expenseCategoryColors[exp.expenseCategory]!, (value) => value + exp.amount!, ifAbsent: () => exp.amount!);
     }
     return generalBarChart(map);
   }

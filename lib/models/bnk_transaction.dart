@@ -1,10 +1,10 @@
 class BankTransaction {
-  String id;
-  String bank;
-  int month;
-  int year;
-  double debitedAmt;
-  double creditedAmt;
+  String ? id;
+  String ? bank;
+  int ? month;
+  int ? year;
+  double ? debitedAmt;
+  double ? creditedAmt;
 
   BankTransaction({this.bank, this.month, this.year, this.debitedAmt, this.creditedAmt});
 

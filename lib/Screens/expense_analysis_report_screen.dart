@@ -10,16 +10,16 @@ import 'package:signup/widgets/navigation_drawer.dart';
 class ExpenseAnalysisReportScreen extends StatefulWidget {
   static const routeName = "/expense-analysis-report-screen";
 
-  const ExpenseAnalysisReportScreen({Key key}) : super(key: key);
+  const ExpenseAnalysisReportScreen({Key ? key}) : super(key: key);
 
   @override
   _ExpenseAnalysisReportScreenState createState() => _ExpenseAnalysisReportScreenState();
 }
 
 class _ExpenseAnalysisReportScreenState extends State<ExpenseAnalysisReportScreen> with SingleTickerProviderStateMixin {
-  TabController _controller;
-  List<Expense> _expenses;
-  Map<int, Map<int, List<Expense>>> _detailedExpenses;
+  late TabController _controller;
+  late List<Expense> _expenses;
+  late Map<int, Map<int, List<Expense>>> _detailedExpenses;
   bool bar = false;
   int year = -1, month = -1;
 
@@ -134,7 +134,7 @@ class _ExpenseAnalysisReportScreenState extends State<ExpenseAnalysisReportScree
   Widget get yearlyStats {
     if (_detailedExpenses == null) return const Center(child: CircularProgressIndicator());
     final yearly = <int, List<Expense>>{};
-    for (var element in _detailedExpenses?.entries ?? []) {
+    for (var element in (_detailedExpenses.entries)) {
       yearly.putIfAbsent(
         element.key,
         () => element.value.entries.fold<List<Expense>>(
@@ -177,7 +177,7 @@ class _ExpenseAnalysisReportScreenState extends State<ExpenseAnalysisReportScree
                   value: year,
                   onChanged: (val) {
                     setState(() {
-                      year = val;
+                      year = val.hashCode;
                     });
                   },
                 ),
@@ -208,7 +208,7 @@ class _ExpenseAnalysisReportScreenState extends State<ExpenseAnalysisReportScree
                   children: [
                     Expanded(
                       flex: 4,
-                      child: ReportUtils.pieChartExpensesModeValueWise(data),
+                      child: ReportUtils.pieChartExpensesModeValueWise(data!),
                     ),
                     const SizedBox(width: 5),
                     Expanded(
@@ -306,9 +306,9 @@ class _ExpenseAnalysisReportScreenState extends State<ExpenseAnalysisReportScree
     }
     final yearData = _detailedExpenses[year];
     if (month == -1) {
-      month = yearData.keys.first;
+      month = yearData!.keys.first;
     }
-    final data = yearData[month];
+    final data = yearData![month];
     const yearSize = 40.0, headingSize = 20.0, textSize = 16.0;
     return Column(
       children: [
@@ -333,7 +333,7 @@ class _ExpenseAnalysisReportScreenState extends State<ExpenseAnalysisReportScree
                   value: year,
                   onChanged: (val) {
                     setState(() {
-                      year = val;
+                      year = val.hashCode;
                       month = -1;
                     });
                   },
@@ -357,7 +357,7 @@ class _ExpenseAnalysisReportScreenState extends State<ExpenseAnalysisReportScree
                   value: month,
                   onChanged: (val) {
                     setState(() {
-                      month = val;
+                      month = val.hashCode;
                     });
                   },
                 ),
@@ -388,7 +388,7 @@ class _ExpenseAnalysisReportScreenState extends State<ExpenseAnalysisReportScree
                   children: [
                     Expanded(
                       flex: 4,
-                      child: ReportUtils.pieChartExpensesModeValueWise(data),
+                      child: ReportUtils.pieChartExpensesModeValueWise(data!),
                     ),
                     const SizedBox(width: 5),
                     Expanded(

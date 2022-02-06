@@ -9,7 +9,7 @@ import 'home_screen.dart';
 class SyncSmsScreen extends StatefulWidget {
   static const routeName = "/sync-sms-screen";
 
-  const SyncSmsScreen({Key key}) : super(key: key);
+  const SyncSmsScreen({Key ? key}) : super(key: key);
 
   @override
   State<SyncSmsScreen> createState() => _SyncSmsScreenState();

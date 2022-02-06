@@ -5,7 +5,7 @@ import '../constants.dart';
 class TextFieldContainer extends StatelessWidget {
   final Widget child;
 
-  const TextFieldContainer({Key key, this.child}) : super(key: key);
+  const TextFieldContainer({Key ? key, required this.child}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

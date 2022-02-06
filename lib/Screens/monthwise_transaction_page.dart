@@ -9,14 +9,14 @@ import '../constants.dart';
 class MonthWiseTransactionPage extends StatefulWidget {
   static const routeName = "/monthly-txn-page";
 
-  const MonthWiseTransactionPage({Key key}) : super(key: key);
+  const MonthWiseTransactionPage({Key ? key}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _MonthWiseTransactionPageState();
 }
 
 class _MonthWiseTransactionPageState extends State<MonthWiseTransactionPage> {
-  List<BankTransaction> transactionList;
+  late List<BankTransaction> transactionList;
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +42,7 @@ class _MonthWiseTransactionPageState extends State<MonthWiseTransactionPage> {
       body: FutureBuilder<List<BankTransaction>>(
         future: TransactionDatabaseHelper.getAllSqliteTransactions(),
         builder: (ctx, snapshot) {
-          final data = snapshot.connectionState == ConnectionState.done ? GroupUpUtil.groupSmsFromTransactions(snapshot.data) : null;
+          final data = snapshot.connectionState == ConnectionState.done ? GroupUpUtil.groupSmsFromTransactions(snapshot.data!) : null;
           return data == null
               ? const Center(child: CircularProgressIndicator())
               : ListView.separated(
@@ -60,7 +60,7 @@ class _MonthWiseTransactionPageState extends State<MonthWiseTransactionPage> {
 class _YearWiseMonthWiseBankWiseTxn extends StatelessWidget {
   final MapEntry<int, Map<int, Map<String, List<BankTransaction>>>> data;
 
-  const _YearWiseMonthWiseBankWiseTxn({Key key, this.data}) : super(key: key);
+  const _YearWiseMonthWiseBankWiseTxn({Key ? key, required this.data}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -90,9 +90,9 @@ class _YearWiseMonthWiseBankWiseTxn extends StatelessWidget {
                                 {"debit": 0, "credit": 0},
                                 (previousValue, element) {
                                   if (element.debitedAmt != null) {
-                                    previousValue["debit"] += element.debitedAmt;
+                                    previousValue.update('debit', (value) => value + element.debitedAmt!);
                                   } else {
-                                    previousValue["credit"] += element.creditedAmt;
+                                    previousValue.update('credit', (value) => value + element.creditedAmt!);
                                   }
                                   return previousValue;
                                 },
@@ -106,10 +106,10 @@ class _YearWiseMonthWiseBankWiseTxn extends StatelessWidget {
                                     ),
                                     const VerticalDivider(),
                                     Expanded(
-                                      child: Text("Debit: ${val["debit"].toStringAsFixed(2)}", textAlign: TextAlign.right),
+                                      child: Text("Debit: ${val["debit"]!.toStringAsFixed(2)}", textAlign: TextAlign.right),
                                     ),
                                     Expanded(
-                                      child: Text("Credit: ${val["credit"].toStringAsFixed(2)}", textAlign: TextAlign.right),
+                                      child: Text("Credit: ${val["credit"]!.toStringAsFixed(2)}", textAlign: TextAlign.right),
                                     ),
                                   ],
                                 ),

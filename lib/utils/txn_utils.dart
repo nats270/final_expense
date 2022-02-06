@@ -23,9 +23,9 @@ class TransactionUtils {
     final map = <Color, double>{};
     for (final txn in txns) {
       if (txn.debitedAmt != null) {
-        map.update(Colors.red, (value) => value + txn.debitedAmt, ifAbsent: () => txn.debitedAmt);
+        map.update(Colors.red, (value) => value + txn.debitedAmt!, ifAbsent: () => txn.debitedAmt!);
       } else {
-        map.update(Colors.green, (value) => value + txn.creditedAmt, ifAbsent: () => txn.creditedAmt);
+        map.update(Colors.green, (value) => value + txn.creditedAmt!, ifAbsent: () => txn.creditedAmt!);
       }
     }
     map.putIfAbsent(Colors.red, () => 0);
@@ -80,17 +80,17 @@ class TransactionSMSParser {
     RegExp(r"is DEBITED for (INR|Rs\.|Rs) *\d+(,\d+)*\.?\d*", caseSensitive: false),
   ];
 
-  static BankTransaction parseSingleSMS(SmsMessage message) {
-    double parseAmount(String string) {
+  static BankTransaction? parseSingleSMS(SmsMessage message) {
+    double parseAmount(String ? string) {
       RegExp exp = RegExp(r"\d+(,\d+)*\.?\d*");
-      double amount = double.parse(exp.stringMatch(string).toString().replaceAll(",", ""));
+      double amount = double.parse(exp.stringMatch(string!).toString().replaceAll(",", ""));
       amount = double.parse(amount.toStringAsPrecision(2));
       return amount;
     }
 
     final txn = BankTransaction();
     for (final bankAddress in TransactionUtils.bankNameMap.keys) {
-      if (message.sender.toLowerCase().endsWith(bankAddress.toLowerCase())) {
+      if (message.sender!.toLowerCase().endsWith(bankAddress.toLowerCase())) {
         txn.bank = TransactionUtils.bankNameMap[bankAddress];
         break;
       }
@@ -100,7 +100,7 @@ class TransactionSMSParser {
 
     for (final credit in (creditFormats + depositFormats)) {
       if (credit.firstMatch(message.body.toString()) != null) {
-        txn.creditedAmt = parseAmount(credit.stringMatch(message.body.toString()));
+        txn.creditedAmt  = parseAmount(credit.stringMatch(message.body.toString()));
         break;
       }
     }
@@ -117,8 +117,8 @@ class TransactionSMSParser {
       return null;
     }
 
-    txn.year = message.date.year;
-    txn.month = message.date.month;
+    txn.year = message.date!.year;
+    txn.month = message.date!.month;
 
     return txn;
   }
@@ -155,36 +155,36 @@ class GroupUpUtil {
       final txn = TransactionSMSParser.parseSingleSMS(message);
       if (txn == null) continue;
       result.update(
-        txn.year,
+        txn.year!,
         (prevValue) => prevValue
           ..update(
-            txn.month,
+            txn.month!,
             (prevValue) => prevValue
               ..update(
-                txn.bank,
+                txn.bank!,
                 (prevValue) => prevValue..add(txn),
                 ifAbsent: () => [txn],
               ),
             ifAbsent: () {
               final m = <String, List<BankTransaction>>{};
-              m.update(txn.bank, (prevValue) => prevValue..add(txn), ifAbsent: () => [txn]);
+              m.update(txn.bank!, (prevValue) => prevValue..add(txn), ifAbsent: () => [txn]);
               return m;
             },
           ),
         ifAbsent: () {
           final r = <int, Map<String, List<BankTransaction>>>{};
           r.update(
-            txn.month,
+            txn.month!,
             (prevValue) => prevValue
               ..update(
-                txn.bank,
+                txn.bank!,
                 (prevValue) => prevValue..add(txn),
                 ifAbsent: () => [txn],
               ),
             ifAbsent: () {
               final m = <String, List<BankTransaction>>{};
               m.update(
-                txn.bank,
+                txn.bank!,
                 (prevValue) => prevValue..add(txn),
                 ifAbsent: () => [txn],
               );
@@ -217,36 +217,36 @@ class GroupUpUtil {
     for (final txn in txns) {
       if (txn == null) continue;
       result.update(
-        txn.year,
+        txn.year!,
         (prevValue) => prevValue
           ..update(
-            txn.month,
+            txn.month!,
             (prevValue) => prevValue
               ..update(
-                txn.bank,
+                txn.bank!,
                 (prevValue) => prevValue..add(txn),
                 ifAbsent: () => [txn],
               ),
             ifAbsent: () {
               final m = <String, List<BankTransaction>>{};
-              m.update(txn.bank, (prevValue) => prevValue..add(txn), ifAbsent: () => [txn]);
+              m.update(txn.bank!, (prevValue) => prevValue..add(txn), ifAbsent: () => [txn]);
               return m;
             },
           ),
         ifAbsent: () {
           final r = <int, Map<String, List<BankTransaction>>>{};
           r.update(
-            txn.month,
+            txn.month!,
             (prevValue) => prevValue
               ..update(
-                txn.bank,
+                txn.bank!,
                 (prevValue) => prevValue..add(txn),
                 ifAbsent: () => [txn],
               ),
             ifAbsent: () {
               final m = <String, List<BankTransaction>>{};
               m.update(
-                txn.bank,
+                txn.bank!,
                 (prevValue) => prevValue..add(txn),
                 ifAbsent: () => [txn],
               );
@@ -263,7 +263,7 @@ class GroupUpUtil {
   static Map<String, List<BankTransaction>> groupBankWise(List<BankTransaction> txns) {
     final map = <String, List<BankTransaction>>{};
     for (final txn in txns) {
-      map.update(txn.bank, (value) => value..add(txn), ifAbsent: () => [txn]);
+      map.update(txn.bank!, (value) => value..add(txn), ifAbsent: () => [txn]);
     }
     return map;
   }
@@ -285,17 +285,17 @@ class GroupUpUtil {
     for (final txn in exps) {
       if (txn == null) continue;
       result.update(
-        txn.date.year,
+        txn.date!.year,
         (prevValue) => prevValue
           ..update(
-            txn.date.month,
+            txn.date!.month,
             (prevValue) => prevValue..add(txn),
             ifAbsent: () => [txn],
           ),
         ifAbsent: () {
           final r = <int, List<Expense>>{};
           r.update(
-            txn.date.month,
+            txn.date!.month,
             (prevValue) => prevValue..add(txn),
             ifAbsent: () => [txn],
           );

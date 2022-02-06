@@ -13,7 +13,7 @@ import 'reset_password_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   static const routeName = "/login-screen";
-  const LoginScreen({Key key}) : super(key: key);
+  const LoginScreen({Key ? key}) : super(key: key);
 
   @override
   _LoginScreenState createState() => _LoginScreenState();
@@ -25,7 +25,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
-  String errorMessage;
+  String ? errorMessage;
 
   @override
   void initState() {
@@ -44,7 +44,7 @@ class _LoginScreenState extends State<LoginScreen> {
       controller: emailController,
       keyboardType: TextInputType.emailAddress,
       validator: (value) {
-        if (value.isEmpty) {
+        if (value!.isEmpty) {
           return ("Please enter email");
         }
         if (!RegExp("^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]").hasMatch(value)) {
@@ -53,7 +53,7 @@ class _LoginScreenState extends State<LoginScreen> {
         return null;
       },
       onSaved: (value) {
-        emailController.text = value;
+        emailController.text = value!;
       },
       textInputAction: TextInputAction.next,
       decoration: InputDecoration(
@@ -70,7 +70,7 @@ class _LoginScreenState extends State<LoginScreen> {
       obscureText: true,
       validator: (value) {
         RegExp regex = RegExp(r'^.{6,}$');
-        if (value.isEmpty) {
+        if (value!.isEmpty) {
           return ("Password is required for login");
         }
         if (!regex.hasMatch(value)) {
@@ -79,7 +79,7 @@ class _LoginScreenState extends State<LoginScreen> {
         return null;
       },
       onSaved: (value) {
-        passwordController.text = value;
+        passwordController.text = value!;
       },
       textInputAction: TextInputAction.done,
       decoration: InputDecoration(
@@ -204,7 +204,7 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void signIn(String email, String password) async {
-    if (_formKey.currentState.validate()) {
+    if (_formKey.currentState!.validate()) {
       try {
         await FirebaseAuthService.signIn(email, password).then((uid) => {
               Fluttertoast.showToast(msg: "Login Successful"),
@@ -233,7 +233,7 @@ class _LoginScreenState extends State<LoginScreen> {
           default:
             errorMessage = "An undefined Error happened.";
         }
-        Fluttertoast.showToast(msg: errorMessage);
+        Fluttertoast.showToast(msg: errorMessage!);
         print(error.code);
       }
     }

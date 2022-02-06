@@ -6,7 +6,7 @@ import 'package:signup/utils/txn_database_helper.dart';
 class ExpenseAddPage extends StatefulWidget {
   static const routeName = "/expense-add-page";
 
-  const ExpenseAddPage({Key key}) : super(key: key);
+  const ExpenseAddPage({Key ? key}) : super(key: key);
 
   @override
   State<ExpenseAddPage> createState() => _ExpenseAddPageState();
@@ -17,7 +17,7 @@ class _ExpenseAddPageState extends State<ExpenseAddPage> {
 
   final _formKey = GlobalKey<FormState>();
   final _ctrlAmount = TextEditingController();
-  DateTime date;
+  DateTime ? date;
   String expenseMode = Expense.expenseModeColors.keys.first;
   String expenseCategory = Expense.expenseCategoryColors.keys.first;
 
@@ -47,7 +47,7 @@ class _ExpenseAddPageState extends State<ExpenseAddPage> {
                       value: expenseMode,
                       icon: const Icon(Icons.keyboard_arrow_down),
                       items: Expense.expenseModeColors.keys.map((item) => DropdownMenuItem(value: item, child: Text(item))).toList(),
-                      onChanged: (newValue) => setState(() => expenseMode = newValue),
+                      onChanged: (newValue) => setState(() => expenseMode = newValue.toString()),
                     ),
                   ),
                 ),
@@ -68,7 +68,7 @@ class _ExpenseAddPageState extends State<ExpenseAddPage> {
                       value: expenseCategory,
                       icon: const Icon(Icons.keyboard_arrow_down),
                       items: Expense.expenseCategoryColors.keys.map((category) => DropdownMenuItem(value: category, child: Text(category))).toList(),
-                      onChanged: (newValue) => setState(() => expenseCategory = newValue),
+                      onChanged: (newValue) => setState(() => expenseCategory = newValue.toString()),
                     ),
                   ),
                 ),
@@ -121,7 +121,7 @@ class _ExpenseAddPageState extends State<ExpenseAddPage> {
                 backgroundColor: kPrimaryColor,
                 onPressed: () async {
                   var form = _formKey.currentState;
-                  if (form.validate()) {
+                  if (form!.validate()) {
                     final exp = Expense.empty();
                     exp.expenseMode = expenseMode;
                     exp.expenseCategory = expenseCategory;

@@ -8,7 +8,7 @@ import 'package:signup/utils/auth_database_helper.dart';
 import '../constants.dart';
 
 class NavigationDrawer extends StatelessWidget {
-  const NavigationDrawer({Key key}) : super(key: key);
+  const NavigationDrawer({Key ? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

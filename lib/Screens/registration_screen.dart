@@ -13,14 +13,14 @@ import '../constants.dart';
 class RegistrationScreen extends StatefulWidget {
   static const routeName = "/registration-screen";
 
-  const RegistrationScreen({Key key}) : super(key: key);
+  const RegistrationScreen({Key ? key}) : super(key: key);
 
   @override
   _RegistrationScreenState createState() => _RegistrationScreenState();
 }
 
 class _RegistrationScreenState extends State<RegistrationScreen> {
-  String errorMessage;
+  String ? errorMessage;
 
   final _formKey = GlobalKey<FormState>();
 
@@ -38,7 +38,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
       keyboardType: TextInputType.text,
       validator: (value) {
         RegExp regex = RegExp(r'^.{3,}$');
-        if (value.isEmpty) {
+        if (value!.isEmpty) {
           return ("First Name cannot be Empty");
         }
         if (!regex.hasMatch(value)) {
@@ -47,7 +47,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         return null;
       },
       onSaved: (value) {
-        firstNameEditingController.text = value;
+        firstNameEditingController.text = value!;
       },
       textInputAction: TextInputAction.next,
       decoration: InputDecoration(
@@ -64,13 +64,13 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
       controller: lastNameEditingController,
       keyboardType: TextInputType.name,
       validator: (value) {
-        if (value.isEmpty) {
+        if (value!.isEmpty) {
           return ("Last Name cannot be Empty");
         }
         return null;
       },
       onSaved: (value) {
-        lastNameEditingController.text = value;
+        lastNameEditingController.text = value!;
       },
       textInputAction: TextInputAction.next,
       decoration: InputDecoration(
@@ -87,7 +87,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
       controller: emailEditingController,
       keyboardType: TextInputType.emailAddress,
       validator: (value) {
-        if (value.isEmpty) {
+        if (value!.isEmpty) {
           return ("Please Enter Your Email");
         }
         // reg expression for email validation
@@ -97,7 +97,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         return null;
       },
       onSaved: (value) {
-        emailEditingController.text = value;
+        emailEditingController.text = value!;
       },
       textInputAction: TextInputAction.next,
       decoration: InputDecoration(
@@ -116,7 +116,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
       obscureText: true,
       validator: (value) {
         RegExp regex = RegExp(r'^.{6,}$');
-        if (value.isEmpty) {
+        if (value!.isEmpty) {
           return ("Password is required for login");
         }
         if (!regex.hasMatch(value)) {
@@ -125,7 +125,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         return null;
       },
       onSaved: (value) {
-        passwordEditingController.text = value;
+        passwordEditingController.text = value!;
       },
       textInputAction: TextInputAction.next,
       decoration: InputDecoration(
@@ -149,7 +149,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         return null;
       },
       onSaved: (value) {
-        confirmPasswordEditingController.text = value;
+        confirmPasswordEditingController.text = value!;
       },
       textInputAction: TextInputAction.done,
       decoration: InputDecoration(
@@ -229,7 +229,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   }
 
   void signup(String email, String password) async {
-    if (_formKey.currentState.validate()) {
+    if (_formKey.currentState!.validate()) {
       try {
         await FirebaseAuthService.createUser(email, password).then((value) => {postDetailsToFirestore()}).catchError((e) {
           Fluttertoast.showToast(msg: e.message);
@@ -257,7 +257,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
           default:
             errorMessage = "An undefined Error happened.";
         }
-        Fluttertoast.showToast(msg: errorMessage);
+        Fluttertoast.showToast(msg: errorMessage!);
         print(error.code);
       }
     }
@@ -265,12 +265,12 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 
   Future postDetailsToFirestore() async {
     FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
-    User user = FirebaseAuthService.currentUser;
+    User? user = FirebaseAuthService.currentUser;
 
     UserModel userModel = UserModel();
 
     // writing all the values
-    userModel.email = user.email;
+    userModel.email = user!.email;
     userModel.uid = user.uid;
     userModel.firstName = firstNameEditingController.text;
     userModel.lastName = lastNameEditingController.text;

@@ -18,11 +18,11 @@ class Expense {
     'CHARITY': Color(0x3e40ffd9),
   };
 
-  String id;
-  String expenseMode;
-  String expenseCategory;
-  double amount;
-  DateTime date;
+  String ? id;
+  String ? expenseMode;
+  String ? expenseCategory;
+  double ? amount;
+  DateTime ? date;
 
   Expense.empty();
 
@@ -38,7 +38,7 @@ class Expense {
     return {
       "id": id,
       "amount": amount,
-      "date": date.toIso8601String(),
+      "date": date!.toIso8601String(),
       "expenseMode": expenseMode,
       "expenseCategory": expenseCategory,
     };

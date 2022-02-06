@@ -6,7 +6,7 @@ import '../constants.dart';
 class RoundedPasswordField extends StatelessWidget {
   final ValueChanged<String> onChanged;
 
-  const RoundedPasswordField({Key key, this.onChanged}) : super(key: key);
+  const RoundedPasswordField({Key ? key, required this.onChanged}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

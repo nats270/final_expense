@@ -11,7 +11,7 @@ import 'login_screen.dart';
 
 class ResetPasswordScreen extends StatefulWidget {
   static const routeName = "/reset-password-screen";
-  const ResetPasswordScreen({Key key}) : super(key: key);
+  const ResetPasswordScreen({Key ? key}) : super(key: key);
 
   @override
   _ResetPasswordScreenState createState() => _ResetPasswordScreenState();
@@ -20,7 +20,7 @@ class ResetPasswordScreen extends StatefulWidget {
 class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
   final _auth = FirebaseAuth.instance;
 
-  String errorMessage;
+  String ? errorMessage;
 
   final _formKey = GlobalKey<FormState>();
 
@@ -33,7 +33,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
       controller: emailEditingController,
       keyboardType: TextInputType.emailAddress,
       validator: (value) {
-        if (value.isEmpty) {
+        if (value!.isEmpty) {
           return ("Please Enter Your Email");
         }
         if (!RegExp("^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]").hasMatch(value)) {
@@ -42,7 +42,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
         return null;
       },
       onSaved: (value) {
-        emailEditingController.text = value;
+        emailEditingController.text = value!;
       },
       textInputAction: TextInputAction.next,
       decoration: InputDecoration(
@@ -125,7 +125,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
   }
 
   void resetPass(String email) async {
-    if (_formKey.currentState.validate()) {
+    if (_formKey.currentState!.validate()) {
       try {
         await _auth.sendPasswordResetEmail(email: email).then((value) => {postDetailsToFirestore()}).catchError((e) {
           Fluttertoast.showToast(msg: e.message);
@@ -153,7 +153,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
           default:
             errorMessage = "An undefined Error happened.";
         }
-        Fluttertoast.showToast(msg: errorMessage);
+        Fluttertoast.showToast(msg: errorMessage!);
         print(error.code);
       }
     }
@@ -165,12 +165,12 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
     // sedning these values
 
     FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
-    User user = _auth.currentUser;
+    User? user = _auth.currentUser;
 
     UserModel userModel = UserModel();
 
     // writing all the values
-    userModel.email = user.email;
+    userModel.email = user!.email;
     userModel.uid = user.uid;
     //userModel.firstName = firstNameEdittingController.text;
     //userModel.lastName = lastNameEdittingController.text;

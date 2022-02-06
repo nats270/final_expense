@@ -9,16 +9,16 @@ import 'package:signup/widgets/navigation_drawer.dart';
 class SMSAnalysisReportScreen extends StatefulWidget {
   static const routeName = "/sms-analysis-report-screen";
 
-  const SMSAnalysisReportScreen({Key key}) : super(key: key);
+  const SMSAnalysisReportScreen({Key ? key}) : super(key: key);
 
   @override
   _SMSAnalysisReportScreenState createState() => _SMSAnalysisReportScreenState();
 }
 
 class _SMSAnalysisReportScreenState extends State<SMSAnalysisReportScreen> with SingleTickerProviderStateMixin {
-  TabController _controller;
-  List<BankTransaction> _txns;
-  Map<int, Map<int, Map<String, List<BankTransaction>>>> _detailedTransactions;
+  late TabController _controller;
+  late List<BankTransaction> _txns;
+  late Map<int, Map<int, Map<String, List<BankTransaction>>>> _detailedTransactions;
   bool bar = false;
   int year = -1, month = -1;
 
@@ -128,7 +128,7 @@ class _SMSAnalysisReportScreenState extends State<SMSAnalysisReportScreen> with 
       );
     }
     if (year == -1) {
-      year = yearly.keys?.first ?? 2022;
+      year = yearly.keys.first;
     }
     final data = yearly[year];
     const yearSize = 40.0, headingSize = 20.0, textSize = 16.0;
@@ -161,7 +161,7 @@ class _SMSAnalysisReportScreenState extends State<SMSAnalysisReportScreen> with 
                   value: year,
                   onChanged: (val) {
                     setState(() {
-                      year = val;
+                      year = val.hashCode;
                     });
                   },
                 ),
@@ -181,7 +181,7 @@ class _SMSAnalysisReportScreenState extends State<SMSAnalysisReportScreen> with 
               ),
               Column(
                 mainAxisSize: MainAxisSize.min,
-                children: data.entries.map((e) {
+                children: data!.entries.map((e) {
                   final bankName = e.key;
                   final bankData = e.value;
                   final totalAmounts = TransactionUtils.totalAmounts(bankData);
@@ -266,9 +266,9 @@ class _SMSAnalysisReportScreenState extends State<SMSAnalysisReportScreen> with 
     }
     final yearData = _detailedTransactions[year];
     if (month == -1) {
-      month = yearData.keys.first;
+      month = yearData!.keys.first;
     }
-    final data = yearData[month];
+    final data = yearData![month];
     const yearSize = 40.0, headingSize = 20.0, textSize = 16.0;
     return Column(
       children: [
@@ -293,7 +293,7 @@ class _SMSAnalysisReportScreenState extends State<SMSAnalysisReportScreen> with 
                   value: year,
                   onChanged: (val) {
                     setState(() {
-                      year = val;
+                      year = val.hashCode;
                       month = -1;
                     });
                   },
@@ -317,7 +317,7 @@ class _SMSAnalysisReportScreenState extends State<SMSAnalysisReportScreen> with 
                   value: month,
                   onChanged: (val) {
                     setState(() {
-                      month = val;
+                      month = val.hashCode;
                     });
                   },
                 ),
@@ -337,7 +337,7 @@ class _SMSAnalysisReportScreenState extends State<SMSAnalysisReportScreen> with 
               ),
               Column(
                 mainAxisSize: MainAxisSize.min,
-                children: data.entries.map((e) {
+                children: data!.entries.map((e) {
                   final bankName = e.key;
                   final bankData = e.value;
                   final totalAmounts = TransactionUtils.totalAmounts(bankData);

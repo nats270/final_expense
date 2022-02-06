@@ -10,7 +10,7 @@ import '../constants.dart';
 class HomeScreen extends StatefulWidget {
   static const routeName = "/home-screen";
 
-  const HomeScreen({Key key}) : super(key: key);
+  const HomeScreen({Key ? key}) : super(key: key);
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -76,7 +76,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget menuItem(IconData iconData, String label, Function onPressed) {
     return GestureDetector(
-      onTap: onPressed,
+      onTap: onPressed(),
       child: Container(
         height: 60,
         color: kPrimaryLightColor,

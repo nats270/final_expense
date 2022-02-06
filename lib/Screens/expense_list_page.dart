@@ -7,7 +7,7 @@ import 'package:signup/utils/txn_database_helper.dart';
 class ExpenseListPage extends StatefulWidget {
   static const routeName = "/expense-list-page";
 
-  const ExpenseListPage({Key key}) : super(key: key);
+  const ExpenseListPage({Key ? key}) : super(key: key);
 
   @override
   State<ExpenseListPage> createState() => _ExpenseListPageState();
@@ -53,19 +53,19 @@ class _ExpenseListPageState extends State<ExpenseListPage> {
               child: Text("No expenses to show!"),
             );
           }
-          data.sort((a, b) => b.date.compareTo(a.date));
+          data.sort((a, b) => b.date!.compareTo(a.date!));
           return ListView.separated(
             itemBuilder: (c, idx) => ListTile(
               leading: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
-                  DateFormat("dd MMM yyyy").format(data[idx].date),
+                  DateFormat("dd MMM yyyy").format(data[idx].date!),
                   style: const TextStyle(fontWeight: FontWeight.bold),
                 ),
               ),
-              title: Text(data[idx].expenseCategory),
-              subtitle: Text(data[idx].expenseMode),
-              trailing: Text("Rs. ${data[idx].amount.toStringAsFixed(2)}"),
+              title: Text(data[idx].expenseCategory!),
+              subtitle: Text(data[idx].expenseMode!),
+              trailing: Text("Rs. ${data[idx].amount!.toStringAsFixed(2)}"),
             ),
             separatorBuilder: (_, __) => const SizedBox(height: 3),
             itemCount: data.length,
